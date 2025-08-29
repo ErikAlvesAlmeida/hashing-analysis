@@ -40,8 +40,8 @@ public enum HashType implements HashFunction {
     MULTIPLICATION {
         @Override
         public int hash(int key, int tableSize) {
-            // Implementação pendente: return key % tableSize;
-            return -1;
+		double frac = (key * A) % 1;
+		return (int) (tableSize * frac);
         }
     },
 
@@ -126,6 +126,12 @@ public enum HashType implements HashFunction {
         }
     };
 
+
+    // =================================
+    // Constante do método multiplicação
+    // =================================
+    private static final double A  = 0.6180339887;
+    /* Constante A vem do inverso da razão aurea*/
 
     // =========================
     // Constantes do método TCR
