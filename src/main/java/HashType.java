@@ -25,8 +25,16 @@ public enum HashType implements HashFunction {
     FOLDING{
         @Override
         public int hash(int key, int tableSize) {
-            // implementar
-            return -1;
+            int size = 3;
+            int sum = 0;
+            String keyStr = String.valueOf(key);
+
+            for(int i = keyStr.length(); i > 0; i -= size) {
+                int start = Integer.max(i - size, 0);
+                sum += Integer.parseInt(keyStr.substring(start, i));
+            }
+            
+            return sum % tableSize;
         }
     },
     SHIFT_XOR{
