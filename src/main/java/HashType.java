@@ -2,7 +2,7 @@ package main.java;
 
 /**
  * Enum {@code HashType} define diferentes estratégias de funções hash
- * para mapeamento de chaves inteiras em uma tabela hash de tamanho arbitrário.
+ * para mapeamento de chaves inteiras em uma tabela hash de tamanho fixo [10007].
  *
  * Cada constante implementa a interface {@link HashFunction} e 
  * possui sua própria lógica de dispersão.
