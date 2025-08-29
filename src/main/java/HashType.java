@@ -43,7 +43,7 @@ public enum HashType implements HashFunction {
 		double frac = (key * A) % 1;
 		return (int) (tableSize * frac);
         }
-    },
+    }
 
     /**
      * Método baseado no Teorema do Resto Chinês (TCR).
