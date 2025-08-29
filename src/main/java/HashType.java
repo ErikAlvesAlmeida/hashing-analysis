@@ -5,7 +5,7 @@ public enum HashType implements HashFunction {
         @Override
         public int hash(int key, int tableSize) {
             // implementar
-            return key % tableSize;
+            return -1;
         }
     },
     MULTIPLICATION {
