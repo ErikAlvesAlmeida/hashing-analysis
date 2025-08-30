@@ -127,9 +127,9 @@ public enum HashType implements HashFunction {
     };
 
 
-    // =================================
+    // ==================================
     // Constante do método multiplicação
-    // =================================
+    // ==================================
     private static final double A  = 0.6180339887;
     /* Constante A vem do inverso da razão aurea*/
 
