@@ -22,8 +22,7 @@ public enum HashType implements HashFunction {
     DIVISION {
         @Override
         public int hash(int key, int tableSize) {
-            // Implementação pendente: return key % tableSize;
-            return -1;
+            return key % tableSize;
         }
     },
     /**
