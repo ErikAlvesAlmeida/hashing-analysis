@@ -95,51 +95,6 @@ public class HashTable {
         double variancia = desvio / qntdElementos;
         return String.format("%.2f", variancia);
     }
-/** 
-    
-     * Recupera o valor associado a uma chave.
-     * @param key Chave a ser buscada.
-     * @return Valor associado como String ou null se a chave não existir.
-     
-    public String get(Integer key){
-        int hash = this.hashFunction.hash(key, SIZE_TABLE);
-        int i = 0;
-        while (true) {
-            int pos = (hash + i) % SIZE_TABLE;
-            if (this.table[pos] == null) break;
-            if (this.table[pos] != DELETED && Objects.equals(this.table[pos].key, key)) {
-                return Integer.toString(this.table[pos].value);
-            }
-            i++;
-            if (i == SIZE_TABLE) break;
-        }
-
-        return null;
-    } 
-    
-
-
-    
-     * Remove uma chave da tabela, marcando sua posição como deletada.
-     * @param key Chave a ser removida.
-     
-    public void remove(Integer key) {
-        int hash = this.hashFunction.hash(key, SIZE_TABLE);
-        int i = 0;
-
-        while (true) {
-            int pos = (hash + i) % SIZE_TABLE;
-            if (this.table[pos] == null) break;
-            if (this.table[pos] != DELETED && Objects.equals(this.table[pos].key, key)) {
-                this.table[pos] = DELETED;
-                this.currSize--;
-                return;
-            }
-            i++;
-            if (i == SIZE_TABLE) break;
-        }
-    }
-*/
 
     /**
      * Retorna o número de colisões que ocorreram durante inserções.
