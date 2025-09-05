@@ -7,7 +7,6 @@ random.seed(7942)
 pasta_destino = os.path.join("data")
 os.makedirs(pasta_destino, exist_ok=True)
 
-
 def gerar_dados_repetidos(num_elementos, minimo=1, maximo=1000000):
     # Gera poucos elementos únicos e repete cada um até chegar ao total
     elementos_base_para_repeticao = [random.randint(minimo, maximo)
@@ -16,7 +15,6 @@ def gerar_dados_repetidos(num_elementos, minimo=1, maximo=1000000):
     for elemento in elementos_base_para_repeticao:
         dados.extend([elemento] * 100)
     return dados[:num_elementos]
-
 
 def gerar_dados_unicos(num_elementos, minimo=1, maximo=10000000):
     # Gera valores únicos aleatórios
@@ -44,22 +42,26 @@ def salvar_csv(nome_arquivo, valores):
 
 # Tamanhos de carga
 tamanhos = {
-    # Entrada pequena (Load_Factor aproximadamente 30% do tamanho da tabela)
-    "pequena": 2999,
-    # Entrada média (Load_Factor aproximadamente 50% do tamanho da tabela)
-    "media": 5003,
-    # Entrada grande (Load_Factor aproximadamente 80% do tamanho da tabela)
-    "grande": 7919
+
+    # Entrada pequena (Load_Factor de 30% do tamanho da tabela)
+    "pequena": 3000,
+    # Entrada média (Load_Factor de 50% do tamanho da tabela)
+    "media": 5000,
+    # Entrada grande (Load_Factor de 80% do tamanho da tabela)
+    "grande": 8000
+
 }
 
 lista_carga = []
 
 for tamanho_nome, tamanho_valor in tamanhos.items():
+
     # Altamente repetidos
     lista_carga.append((
         f"repetidos_{tamanho_nome}.csv",
         gerar_dados_repetidos(num_elementos=tamanho_valor)
     ))
+
     # Totalmente únicos
     lista_carga.append((
         f"unicos_{tamanho_nome}.csv",
