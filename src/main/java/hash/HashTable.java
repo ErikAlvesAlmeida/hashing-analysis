@@ -12,6 +12,7 @@ public class HashTable {
     private Pair[] frequencia;
     private HashFunction hashFunction;
     private int size;
+    private double variancia;
     private int collisions = 0;
 
     private final int SIZE_TABLE = 10007;
@@ -26,6 +27,7 @@ public class HashTable {
         this.hashFunction = hashFunction;
         this.size = 0;
         this.collisions = 0;
+        this.variancia = 0;
     }
 
     /**
@@ -73,7 +75,7 @@ public class HashTable {
         return aux;
     }
 
-    public String variancia() {
+    public String getVariancia() {
         int sum = 0;
         int qntdElementos = this.size;
 
@@ -92,7 +94,7 @@ public class HashTable {
             }
         }
 
-        double variancia = desvio / qntdElementos;
+        this.variancia = desvio / qntdElementos;
         return String.format("%.2f", variancia);
     }
 

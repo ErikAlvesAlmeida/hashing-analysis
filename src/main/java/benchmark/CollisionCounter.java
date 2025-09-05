@@ -46,7 +46,7 @@ public class CollisionCounter {
                     }
 
                     // 4. Imprimir os resultados
-                    System.out.println("HashType=" + hashType + " | Dataset=" + datasetPath + " | Size=" + keys.length + " | Collisions=" + table.getCollisions() + "| Variance=" + table.variancia());
+                    System.out.println("HashType=" + hashType + " | Dataset=" + datasetPath + " | Size=" + keys.length + " | Collisions=" + table.getCollisions() + "| Variance=" + table.getVariancia());
                 } catch (IOException e) {
                     System.err.println("Erro ao ler o arquivo: " + datasetPath);
                     e.printStackTrace();
