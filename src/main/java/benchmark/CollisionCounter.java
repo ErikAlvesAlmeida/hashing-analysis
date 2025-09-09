@@ -21,8 +21,6 @@ public class CollisionCounter {
             "data/sequenciais_grande.csv"
         };
 
-        int count = 1;
-
         for (String hashType : hashTypes) {
             for (String datasetPath : datasetPaths) {
                 try {

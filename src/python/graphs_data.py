@@ -3,14 +3,17 @@ import matplotlib.pyplot as plt
 import re
 
 # Esta função extrai os dados relevantes de cada linha de texto
+
+
 def parse_line(line):
     # A linha pode estar quebrada, então concatenamos até encontrar todos os dados
     if "HashType" not in line:
         return None
-    
+
     # Usa uma expressão regular para capturar os valores
-    match = re.search(r"HashType=(\w+)\s*\|\s*Dataset=(.+?)\s*\|\s*Size=(\d+)\s*\|\s*Collisions=([\d\.]+)\s*\|\s*Variance=([\d\.]+)", line)
-    
+    match = re.search(
+        r"HashType=(\w+)\s*\|\s*Dataset=(.+?)\s*\|\s*Size=(\d+)\s*\|\s*Collisions=([\d\.]+)\s*\|\s*Variance=([\d\.]+)", line)
+
     if match:
         data = {
             'HashType': match.group(1),
@@ -26,10 +29,11 @@ def parse_line(line):
 # Leitura e processamento dos dados
 # ---
 
+
 data_list = []
 # Lê o arquivo de resultados gerado pelo Java
 # O caminho do arquivo é 'results.txt' porque ele está na raiz do seu projeto
-with open('results.txt', 'r', encoding='utf-16') as file:
+with open('results/results.txt', 'r', encoding='utf-16') as file:
     content = file.read()
 
 # Divide o conteúdo por linhas para processar cada registro
@@ -62,11 +66,13 @@ ordered_datasets = [
     "data/unicos_grande.csv",
     "data/sequenciais_grande.csv"
 ]
-df['Dataset'] = pd.Categorical(df['Dataset'], categories=ordered_datasets, ordered=True)
+df['Dataset'] = pd.Categorical(
+    df['Dataset'], categories=ordered_datasets, ordered=True)
 df.sort_values(by=['Dataset', 'HashType'], inplace=True)
 
 # Cria nomes mais curtos e legíveis para os eixos dos gráficos
-df['Dataset_Name'] = df['Dataset'].astype(str).str.replace('data/', '').str.replace('.csv', '').str.replace('_', ' ').str.title()
+df['Dataset_Name'] = df['Dataset'].astype(str).str.replace(
+    'data/', '').str.replace('.csv', '').str.replace('_', ' ').str.title()
 unique_datasets = df['Dataset_Name'].unique()
 
 # ---
@@ -76,7 +82,8 @@ unique_datasets = df['Dataset_Name'].unique()
 # Gráfico de Colisões
 plt.figure(figsize=(12, 7))
 for hash_type, group in df.groupby('HashType'):
-    plt.plot(group['Dataset_Name'], group['Collisions'], label=hash_type, marker='o', linestyle='--')
+    plt.plot(group['Dataset_Name'], group['Collisions'],
+             label=hash_type, marker='o', linestyle='--')
 
 plt.title('Colisões por Algoritmo de Hash', fontsize=16)
 plt.xlabel('Conjunto de Dados', fontsize=12)
@@ -91,7 +98,8 @@ plt.show()
 # Gráfico de Variância
 plt.figure(figsize=(12, 7))
 for hash_type, group in df.groupby('HashType'):
-    plt.plot(group['Dataset_Name'], group['Variance'], label=hash_type, marker='o', linestyle='-')
+    plt.plot(group['Dataset_Name'], group['Variance'],
+             label=hash_type, marker='o', linestyle='-')
 
 plt.title('Variância por Algoritmo de Hash', fontsize=16)
 plt.xlabel('Conjunto de Dados', fontsize=12)

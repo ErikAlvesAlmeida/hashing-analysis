@@ -10,14 +10,16 @@ package hash;
 public enum HashType implements HashFunction {
     
     /**
-     * Método da Divisão.
+     * **Método da Divisão**
      * <p>
-     * Calcula o índice como:
+     * Calcula o índice simplesmente tirando o resto da divisão da chave
+     * pelo tamanho da tabela:
      * <pre>
-     *     h(k) = k % tableSize
+     *     h(k) = key % tableSize
      * </pre>
-     * É simples e eficiente, mas pode gerar muitas colisões se
-     * {@code tableSize} não for um número primo distante de potências de 2.
+     * É rápido e direto, mas pode gerar muitas colisões se o
+     * {@code tableSize} não for primo ou estiver muito próximo
+     * de uma potência de 2.
      */
     DIVISION {
         @Override
@@ -26,15 +28,16 @@ public enum HashType implements HashFunction {
         }
     },
     /**
-     * Método da Multiplicação.
+     * **Método da Multiplicação**
      * <p>
-     * Usa uma constante A no intervalo (0,1), geralmente derivada
-     * da razão áurea, para calcular:
+     * Usa uma constante real A no intervalo (0,1) — normalmente
+     * relacionada à razão áurea — para espalhar melhor as chaves.
+     * A ideia é:
      * <pre>
      *     h(k) = floor( tableSize * ( (k * A) % 1 ) )
      * </pre>
-     * A constante A deve ser cuidadosamente escolhida para garantir
-     * boa dispersão.
+     * A escolha de A é fundamental para evitar padrões ruins
+     * na distribuição.
      */
     MULTIPLICATION {
         @Override
@@ -45,20 +48,21 @@ public enum HashType implements HashFunction {
     },
 
     /**
-     * Método baseado no Teorema do Resto Chinês (TCR).
+     * **Método do Teorema do Resto Chinês (TCR)**
      * <p>
-     * Utiliza módulos fixos (15, 26, 77), seus respectivos
-     * produtos parciais e inversos modulares para reconstruir
-     * um número único congruente a cada resto simultaneamente.
+     * Baseia-se em módulos fixos (15, 26 e 77). Para cada chave,
+     * calcula os restos nesses módulos, combina usando os
+     * inversos modulares e reconstrói um valor único congruente
+     * a todos ao mesmo tempo.
      * <p>
-     * Fórmula:
+     * Exemplo do processo:
      * <pre>
      *     X ≡ a1 (mod 15)
      *     X ≡ a2 (mod 26)
      *     X ≡ a3 (mod 77)
      *     h(k) = (X % M) % tableSize
      * </pre>
-     * onde M = 30030.
+     * com M = 30030.
      */
     TCR{
         @Override
@@ -74,12 +78,12 @@ public enum HashType implements HashFunction {
     },
 
     /**
-     * Método do Folding (dobra).
+     * **Método do Folding (Dobra)**
      * <p>
-     * Converte a chave em string, divide em blocos de 3 dígitos
-     * (do final para o começo) e soma esses blocos.
+     * Transforma a chave em string, quebra em blocos de
+     * até 3 dígitos (de trás para frente) e soma os blocos.
      * <p>
-     * Fórmula:
+     * Fórmula final:
      * <pre>
      *     h(k) = (soma dos blocos) % tableSize
      * </pre>
@@ -100,14 +104,14 @@ public enum HashType implements HashFunction {
     },
 
     /**
-     * Método Shift-XOR.
+     * **Método Shift-XOR**
      * <p>
-     * Percorre cada dígito da chave, aplica um deslocamento
-     * de bits e combina os resultados usando a operação XOR.
+     * Analisa a chave dígito por dígito, desloca os bits
+     * de cada parte e combina tudo usando XOR.
      * <p>
-     * Fórmula simplificada:
+     * Em resumo:
      * <pre>
-     *     h(k) = (XOR de todos os dígitos deslocados) % tableSize
+     *     h(k) = (XOR dos dígitos deslocados) % tableSize
      * </pre>
      */
     SHIFT_XOR{
