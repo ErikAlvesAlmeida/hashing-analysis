@@ -1,11 +1,34 @@
 import csv
 import random
 import os
+import math
 
 random.seed(7942)
 
 pasta_destino = os.path.join("../../data")
 os.makedirs(pasta_destino, exist_ok=True)
+
+
+def eh_primo(num):
+    if num < 2 or num % 2 == 0:
+        return False
+    if num == 2:
+        return True
+    raiz = math.floor(math.sqrt(num))
+    for i in range(3, raiz+1, 2):
+        if (num % i == 0):
+            return False
+    return True
+
+
+def gerar_dados_primos(num_elementos, minimo=1):
+    values = []
+    i = minimo
+    while len(values) < num_elementos:
+        if eh_primo(i):
+            values.append(i)
+        i += 1
+    return values
 
 
 def gerar_dados_unicos(num_elementos, minimo=1, maximo=10000000):
@@ -47,6 +70,11 @@ tamanhos = {
 lista_carga = []
 
 for tamanho_nome, tamanho_valor in tamanhos.items():
+    # Totalmente primos
+    lista_carga.append((
+        f"primos_{tamanho_nome}.csv",
+        gerar_dados_primos(num_elementos=tamanho_valor)
+    ))
     # Totalmente únicos
     lista_carga.append((
         f"unicos_{tamanho_nome}.csv",

@@ -60,11 +60,11 @@ df = pd.DataFrame(data_list)
 # Ordena os datasets para garantir uma ordem lógica nos gráficos
 ordered_datasets = [
     "data/unicos_pequena.csv",
-    "data/sequenciais_pequena.csv",
-    "data/unicos_media.csv",
-    "data/sequenciais_media.csv",
-    "data/unicos_grande.csv",
-    "data/sequenciais_grande.csv"
+    # "data/sequenciais_pequena.csv",
+    # "data/unicos_media.csv",
+    # "data/sequenciais_media.csv",
+    # "data/unicos_grande.csv",
+    # "data/sequenciais_grande.csv"
 ]
 df['Dataset'] = pd.Categorical(
     df['Dataset'], categories=ordered_datasets, ordered=True)
