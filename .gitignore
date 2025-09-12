@@ -1,30 +1,24 @@
-# Dados e outputs gerados
-data/
-results/
-
-# Logs
+# Logs e arquivos do sistema
 *.log
-
-# Sistema
 Thumbs.db
-.DS_Store
 
-# Gradle
+# Pastas do Gradle
 .gradle/
 build/
 out/
+bin/
 
-# Java
+# Classes compiladas
 *.class
 
-# IDEs
+# Resultados e dados gerados
+results/
+data/
+
+# Config do VSCode
 .vscode/
-.idea/
 
-# Arquivos temporários
-*.tmp
-*.swp
-*.bak
-
-# Outros arquivos que não precisam de versionamento
-*.iml
+# Outros arquivos .gradle que não sejam essenciais
+*.gradle
+!build.gradle
+!settings.gradle
