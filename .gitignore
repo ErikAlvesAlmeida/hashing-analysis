@@ -1,9 +1,30 @@
+# Dados e outputs gerados
+data/
+results/
+
+# Logs
 *.log
+
+# Sistema
 Thumbs.db
+.DS_Store
+
+# Gradle
 .gradle/
 build/
 out/
-bin/
+
+# Java
 *.class
-results/
+
+# IDEs
 .vscode/
+.idea/
+
+# Arquivos temporários
+*.tmp
+*.swp
+*.bak
+
+# Outros arquivos que não precisam de versionamento
+*.iml
