@@ -2,22 +2,18 @@ plugins {
     id 'java'
 }
 
-// Configurações gerais do projeto
 group = 'com.hashing.analysis'
 version = '1.0'
 
-// Configurações do Java
-java { // Crie este bloco 'java'
-    sourceCompatibility = '17' // Mova a linha para cá
+java { 
+    sourceCompatibility = '17'
 }
 
 repositories {
     mavenCentral()
 }
 
-// Adicione esta task para criar as pastas necessárias
 task createDirs {
-    // Definimos os diretórios aqui, fora do bloco de execução
     def keysDir = file('data/keys')
     def outputDir = file('data/output')
     def resultsDir = file('results')
@@ -35,7 +31,6 @@ task createDirs {
     }
 }
 
-// A task para gerar dados deve criar seu próprio diretório
 task generateData(type: Exec) {
     description 'Gera os dados de entrada usando o script Python.'
     def keysDir = file('data/keys')
@@ -44,30 +39,24 @@ task generateData(type: Exec) {
             keysDir.mkdirs()
         }
     }
-    workingDir 'src/python'
-    commandLine 'python', 'scripts_data.py'
+    workingDir project.rootDir  
+    commandLine 'python', 'src/python/scripts_data.py'
 }
 
-// A task runAnalysis deve usar redirectOutput
 task runAnalysis(type: JavaExec) {
     description 'Roda a análise de colisão com o programa Java.'
     dependsOn tasks.compileJava
     
-    // Declara o diretório de saída
     def outputDir = file('data/output')
 
-    // Define o arquivo de saída
     def outputFile = file('data/output/output.txt')
 
-    // Ação que ocorre antes de executar a tarefa
     doFirst {
-        // Garante que o diretório exista antes de criar o arquivo
         if (!outputDir.exists()) {
             outputDir.mkdirs()
         }
     }
 
-    // Ação que ocorre depois de executar a tarefa (opcional, mas boa prática)
     doLast {
         println "Analise concluida. Saida salva em: ${outputFile.absolutePath}"
     }
@@ -78,7 +67,6 @@ task runAnalysis(type: JavaExec) {
     
 }
 
-// A task para gerar gráficos deve criar seu próprio diretório
 task generateGraphs(type: Exec) {
     description 'Gera os gráficos com base nos resultados da análise.'
     dependsOn runAnalysis
@@ -92,14 +80,15 @@ task generateGraphs(type: Exec) {
     commandLine 'python', 'src/python/graphs_data.py'
 }
 
-// A task principal 'automateAll' depende de todas as outras
 task automateAll {
     dependsOn generateData, runAnalysis, generateGraphs
     description 'Executa a pipeline completa: gera dados, roda a análise e cria os gráficos.'
 }
 
-// Uma task para limpar o projeto, como os resultados gerados
 task cleanResults(type: Delete) {
     description 'Limpa os arquivos de resultados e gráficos gerados.'
-    delete 'results', 'graphs' // Ajuste os nomes das pastas se necessário
+    delete 'results', 'graphs'
 }
+
+runAnalysis.mustRunAfter generateData
+generateGraphs.mustRunAfter runAnalysis
