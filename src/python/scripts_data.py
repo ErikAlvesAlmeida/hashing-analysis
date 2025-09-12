@@ -5,7 +5,7 @@ import math
 
 random.seed(7942)
 
-pasta_destino = os.path.join("../../data")
+pasta_destino = os.path.join("data/keys/")
 os.makedirs(pasta_destino, exist_ok=True)
 
 

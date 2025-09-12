@@ -1,24 +1,25 @@
 package benchmark;
+import hash.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import hash.HashTable;
-import hash.HashType;
-
 public class CollisionCounter {
 
     public static void main(String[] args) {
         String[] hashTypes = {"DIVISION", "MULTIPLICATION", "TCR", "FOLDING", "SHIFT_XOR"};
         String[] datasetPaths = {
-            "data/unicos_pequena.csv",
-            "data/sequenciais_pequena.csv",
-            "data/unicos_media.csv",
-            "data/sequenciais_media.csv",
-            "data/unicos_grande.csv",
-            "data/sequenciais_grande.csv"
+            "data/keys/unicos_pequena.csv",
+            "data/keys/sequenciais_pequena.csv",
+            "data/keys/primos_pequena.csv",
+            "data/keys/unicos_media.csv",
+            "data/keys/sequenciais_media.csv",
+            "data/keys/primos_media.csv",
+            "data/keys/unicos_grande.csv",
+            "data/keys/sequenciais_grande.csv",
+            "data/keys/primos_grande.csv"
         };
 
         for (String hashType : hashTypes) {
