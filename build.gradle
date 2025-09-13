@@ -1,0 +1,94 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.hashing.analysis'
+version = '1.0'
+
+java { 
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+task createDirs {
+    def keysDir = file('data/keys')
+    def outputDir = file('data/output')
+    def resultsDir = file('results')
+
+    doLast {
+        if (!keysDir.exists()) {
+            keysDir.mkdirs()
+        }
+        if (!outputDir.exists()) {
+            outputDir.mkdirs()
+        }
+        if (!resultsDir.exists()) {
+            resultsDir.mkdirs()
+        }
+    }
+}
+
+task generateData(type: Exec) {
+    description 'Gera os dados de entrada usando o script Python.'
+    def keysDir = file('data/keys')
+    doFirst {
+        if (!keysDir.exists()) {
+            keysDir.mkdirs()
+        }
+    }
+    workingDir project.rootDir  
+    commandLine 'python', 'src/python/scripts_data.py'
+}
+
+task runAnalysis(type: JavaExec) {
+    description 'Roda a análise de colisão com o programa Java.'
+    dependsOn tasks.compileJava
+    
+    def outputDir = file('data/output')
+
+    def outputFile = file('data/output/output.txt')
+
+    doFirst {
+        if (!outputDir.exists()) {
+            outputDir.mkdirs()
+        }
+    }
+
+    doLast {
+        println "Analise concluida. Saida salva em: ${outputFile.absolutePath}"
+    }
+
+    workingDir project.rootDir
+    classpath sourceSets.main.runtimeClasspath
+    mainClass = 'benchmark.CollisionCounter'
+    
+}
+
+task generateGraphs(type: Exec) {
+    description 'Gera os gráficos com base nos resultados da análise.'
+    dependsOn runAnalysis
+    def resultsDir = file('results')
+    doFirst {
+        if (!resultsDir.exists()) {
+            resultsDir.mkdirs()
+        }
+    }
+    workingDir project.rootDir
+    commandLine 'python', 'src/python/graphs_data.py'
+}
+
+task automateAll {
+    dependsOn generateData, runAnalysis, generateGraphs
+    description 'Executa a pipeline completa: gera dados, roda a análise e cria os gráficos.'
+}
+
+task cleanResults(type: Delete) {
+    description 'Limpa os arquivos de resultados e gráficos gerados.'
+    delete 'results', 'graphs'
+}
+
+runAnalysis.mustRunAfter generateData
+generateGraphs.mustRunAfter runAnalysis

@@ -1,0 +1,24 @@
+# Logs e arquivos do sistema
+*.log
+Thumbs.db
+
+# Pastas do Gradle
+.gradle/
+build/
+out/
+bin/
+
+# Classes compiladas
+*.class
+
+# Resultados e dados gerados
+results/
+data/
+
+# Config do VSCode
+.vscode/
+
+# Outros arquivos .gradle que não sejam essenciais
+*.gradle
+!build.gradle
+!settings.gradle

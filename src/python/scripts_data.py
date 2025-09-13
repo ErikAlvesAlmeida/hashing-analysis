@@ -1,21 +1,34 @@
 import csv
 import random
 import os
+import math
 
 random.seed(7942)
 
-pasta_destino = os.path.join("data")
+pasta_destino = os.path.join("data/keys/")
 os.makedirs(pasta_destino, exist_ok=True)
 
 
-def gerar_dados_repetidos(num_elementos, minimo=1, maximo=1000000):
-    # Gera poucos elementos únicos e repete cada um até chegar ao total
-    elementos_base_para_repeticao = [random.randint(minimo, maximo)
-                                     for _ in range(max(1, num_elementos // 100))]
-    dados = []
-    for elemento in elementos_base_para_repeticao:
-        dados.extend([elemento] * 100)
-    return dados[:num_elementos]
+def eh_primo(num):
+    if num < 2 or num % 2 == 0:
+        return False
+    if num == 2:
+        return True
+    raiz = math.floor(math.sqrt(num))
+    for i in range(3, raiz+1, 2):
+        if (num % i == 0):
+            return False
+    return True
+
+
+def gerar_dados_primos(num_elementos, minimo=1):
+    values = []
+    i = minimo
+    while len(values) < num_elementos:
+        if eh_primo(i):
+            values.append(i)
+        i += 1
+    return values
 
 
 def gerar_dados_unicos(num_elementos, minimo=1, maximo=10000000):
@@ -44,21 +57,23 @@ def salvar_csv(nome_arquivo, valores):
 
 # Tamanhos de carga
 tamanhos = {
-    # Entrada pequena (Load_Factor aproximadamente 30% do tamanho da tabela)
-    "pequena": 2999,
-    # Entrada média (Load_Factor aproximadamente 50% do tamanho da tabela)
-    "media": 5003,
-    # Entrada grande (Load_Factor aproximadamente 80% do tamanho da tabela)
-    "grande": 7919
+
+    # Entrada pequena (Load_Factor de 30% do tamanho da tabela)
+    "pequena": 3000,
+    # Entrada média (Load_Factor de 50% do tamanho da tabela)
+    "media": 5000,
+    # Entrada grande (Load_Factor de 80% do tamanho da tabela)
+    "grande": 8000
+
 }
 
 lista_carga = []
 
 for tamanho_nome, tamanho_valor in tamanhos.items():
-    # Altamente repetidos
+    # Totalmente primos
     lista_carga.append((
-        f"repetidos_{tamanho_nome}.csv",
-        gerar_dados_repetidos(num_elementos=tamanho_valor)
+        f"primos_{tamanho_nome}.csv",
+        gerar_dados_primos(num_elementos=tamanho_valor)
     ))
     # Totalmente únicos
     lista_carga.append((
