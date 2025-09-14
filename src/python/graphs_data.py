@@ -84,7 +84,7 @@ for size, lf in load_factors.items():
     plt.legend(title="Entradas", loc="upper left")
     plt.grid(axis='y', linestyle=':', alpha=0.6)
     plt.tight_layout()
-    plt.savefig(f"results/hist_colisoes_{lf}.pdf")
+    plt.savefig(f"results/collision/hist_colisoes_{lf}.pdf")
     plt.close()
 
 # --- HISTOGRAMAS DE VARIÂNCIA ---
@@ -114,7 +114,7 @@ for size, lf in load_factors.items():
     plt.legend(title="Entradas", loc="upper left")
     plt.grid(axis='y', linestyle=':', alpha=0.6)
     plt.tight_layout()
-    plt.savefig(f"results/hist_variancia_{lf}.pdf")
+    plt.savefig(f"results/variance/hist_variancia_{lf}.pdf")
     plt.close()
 
 print("Gráficos gerados com sucesso na pasta 'results'.")
