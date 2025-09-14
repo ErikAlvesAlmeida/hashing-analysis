@@ -1,23 +1,29 @@
 # Logs e arquivos do sistema
 *.log
+.DS_Store
 Thumbs.db
+*~
 
-# Pastas do Gradle
+# Pastas do Gradle (cache e builds)
 .gradle/
 build/
+*/build/
 out/
 bin/
 
 # Classes compiladas
 *.class
 
-# dados gerados
+# Dados gerados de execução
 data/
 
 # Config do VSCode
 .vscode/
 
-# Outros arquivos .gradle que não sejam essenciais
+# Arquivos .gradle que não sejam essenciais
 *.gradle
 !build.gradle
 !settings.gradle
+!gradle/
+!gradlew
+!gradlew.bat
