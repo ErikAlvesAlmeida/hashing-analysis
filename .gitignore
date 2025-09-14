@@ -11,8 +11,7 @@ bin/
 # Classes compiladas
 *.class
 
-# Resultados e dados gerados
-results/
+# dados gerados
 data/
 
 # Config do VSCode
