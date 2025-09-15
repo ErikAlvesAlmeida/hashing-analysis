@@ -40,9 +40,9 @@
       <section id="metodologia" class="card">
         <h2>Metodologia Geral</h2>
         <p>
-          Neste estudo, adotamos uma abordagem experimental para analisar o desempenho de funções hash utilizando uma tabela hash por endereçamento aberto.  
+            Neste estudo, adotamos uma abordagem experimental para analisar o desempenho de funções hash utilizando uma tabela hash por endereçamento aberto.  
 
-          Para gerar os dados de teste, utilizamos um script em Python que criou cargas de diferentes tamanhos e padrões de chaves, permitindo avaliar as funções hash sob variados fatores de carga e diferentes cenários de acesso. Cada experimento consistiu principalmente em inserir os elementos na tabela e contar o número de colisões ocorridas, fornecendo métricas importantes que foram posteriormente utilizadas na análise do desempenho das funções hash.  
+            Para gerar os dados de teste, utilizamos um script em Python que criou cargas de diferentes tamanhos e padrões de chaves, permitindo avaliar as funções hash sob variados fatores de carga e diferentes cenários de acesso. Cada experimento consistiu principalmente em inserir os elementos na tabela e contar o número de colisões ocorridas, fornecendo métricas importantes que foram posteriormente utilizadas na análise do desempenho das funções hash.  
 
           A tabela hash por endereçamento aberto foi implementada de forma que cada posição da tabela armazenasse apenas um elemento. Em caso de colisão, o próximo espaço disponível na tabela era utilizado para inserir o novo elemento, seguindo uma sequência linear (ou outro método de sondagem escolhido). Essa abordagem permite controlar e medir de forma precisa o número de colisões ocorridas durante a inserção, fornecendo dados concretos para avaliar a eficiência das funções hash.
         </p>
@@ -51,37 +51,61 @@
       <section id="funcoes" class="card">
         <h2>Funções</h2>
         <p>
-           As funções hash têm o objetivo de transformar uma chave de entrada em um endereço na tabela hash, distribuindo os elementos de forma uniforme para reduzir colisões. Neste estudo, foram analisadas cinco funções hash clássicas: divisão, multiplicação, folding, shift-XOR e TCR (Teorema Chinês do Resto). A seguir, cada uma é apresentada com sua construção, funcionamento e exemplo prático.
+            As funções hash têm o objetivo de transformar uma chave de entrada em um endereço na tabela hash, distribuindo os elementos de forma uniforme para reduzir colisões. Neste estudo, foram analisadas cinco funções hash clássicas: divisão, multiplicação, folding, shift-XOR e TCR (Teorema Chinês do Resto). A seguir, cada uma é apresentada com sua construção, funcionamento e exemplo prático.
         </p>
 
       <h3>1. Função da Divisão</h3>
       <p>
-        A função da divisão calcula o endereço como o resto da divisão da chave pelo tamanho da tabela (m). É simples e eficiente, mas pode gerar padrões indesejados se a tabela tiver tamanho inadequado.  
+            A função da divisão calcula o endereço como o resto da divisão da chave pelo tamanho da tabela (m). É simples e eficiente. Contudo, pode acontecer de gerar padrões indesejados se a tabela tiver tamanho inadequado, para evitar padrões esses padrões indesejados, m deve ser, idealmente, um número primo.
+      <p>
        <strong>Exemplo:</strong> Chave = 123, tamanho da tabela m = 10 → endereço = 123 mod 10 = 3.
       </p>
 
       <h3>2. Função da Multiplicação</h3>
       <p>
-        A função da multiplicação multiplica a chave por uma constante 0 < A < 1, extrai a parte fracionária e multiplica pelo tamanho da tabela. Ela reduz a probabilidade de padrões repetitivos.  
-        <strong>Exemplo:</strong> Chave = 123, A = 0.618, m = 10 → endereço = floor(10 * frac(123 * 0.618)) = 10 * 0.114 ≈ 1.
+            Esta função multiplica a chave por uma constante A (onde 0 < A < 1), extrai a parte fracionária do resultado e, por fim, multiplica pelo tamanho da tabela m, pegando o piso do valor final. É ótima para reduzir padrões. Uma constante A comum é (√5 - 1) / 2 ≈ 0.618033.  
+      <p>
+        <strong>Exemplo:</strong> Chave = 123, A &asymp; 0.618, m = 1000.
+        </p>
+        <ol>
+          <li><code>123 * 0.618033 = 76.018</code></li>
+          <li><code>Parte fracionária: 0.018</code></li>
+          <li><code>1000 * 0.018 = 18</code></li>
+          <li><code>Endereço = flor(18) = 18.</code></li>
+        <ol> 
       </p>
 
       <h3>3. Função Folding</h3>
       <p>
-        A função folding divide a chave em partes menores, soma essas partes e aplica mod m para obter o endereço. É útil para chaves longas ou numéricas grandes.  
-        <strong>Exemplo:</strong> Chave = 123456, m = 10 → soma das partes (123 + 456 = 579) → 579 mod 10 = 9.
+            A função folding divide a chave em partes menores, soma essas partes e aplica o módulo m no resultado. É muito eficaz para chaves longas, como números de CPF ou strings.  
+      <p> 
+        <strong>Exemplo:</strong> Chave = 12345678, m = 100.
+      </p>
+        <ol>
+          <li><code>Divide em partes: 12 + 34 + 56 + 78</code></li>
+          <li><code>Soma: 180</code></li>
+          <li><code>Endereço = 180 mod 100 = 80</code></li>
+        <ol>
       </p>
 
       <h3>4. Função Shift-XOR</h3>
       <p>
-        A função shift-XOR trabalha em nível binário, deslocando bits e aplicando a operação XOR para combinar diferentes partes da chave. Gera endereços dispersos e difíceis de prever.  
-        <strong>Exemplo:</strong> Chave binária = 10110110 → shift e XOR → endereço = 6 (após mod m).
+            Esta função manipula a representação binária da chave. Ela desloca (shift) e combina (XOR) pedaços dos bits da chave para gerar um valor final bem distribuído. O resultado é um hash com alta dispersão.  
+      <p>
+        <strong>Exemplo:</strong> Chave binária = 10110110, m = 16.
+      </p>
+        <ol>
+          <li><code>Divide os 8 bits em duas partes: 1100 e 0110</code></li>
+          <li><code>Aplica XOR: 1100 XOR 0110 = 1010</code></li>
+          <li><code>Endereço = 10 mod 16 = 10.</code></li>
+        <ol>
       </p>
 
       <h3>5. Função TCR (Teorema Chinês do Resto)</h3>
       <p>
-        A função baseada no TCR utiliza restos de divisões por números primos distintos para calcular o endereço. Permite distribuir elementos uniformemente mesmo com padrões de entrada específicos.  
-        <strong>Exemplo:</strong> Chave = 35, módulos primos m1=3, m2=5 → combina restos usando TCR → endereço final = 2.
+            Uma abordagem mais teórica, a função TCR usa restos de divisões por uma série de números primos entre si para calcular um endereço único. Embora garanta uma excelente distribuição, sua complexidade computacional a torna rara em implementações práticas de tabelas hash.  
+      <p>
+        <strong>Exemplo:</strong> Chave = 35, módulos primos m1 = 3, m2 = 5. Os restos são (35 mod 3 = 2) e (35 mod 5 = 0). O TCR combina matematicamente estes restos para gerar um endereço final.
       </p>
     </section>
 
@@ -89,7 +113,7 @@
       <section id="resultados" class="card">
         <h2>Resultados</h2>
         <p>
-          Nesta seção serão apresentados os gráficos gerados a partir dos experimentos realizados. Os resultados serão organizados de acordo com o tipo de carga utilizada e o tipo de métrica analisada (número de colisões ou variância).  
+            Nesta seção serão apresentados os gráficos gerados a partir dos experimentos realizados. Os resultados serão organizados de acordo com o tipo de carga utilizada e o tipo de métrica analisada (número de colisões ou variância).  
         </p>
 
         <h3>1. Gráficos por Tipo de Carga</h3>
@@ -107,24 +131,24 @@
       <section id="analise" class="card">
         <h2>Análise</h2>
           <p>
-            A análise deste projeto foi realizada a partir das métricas obtidas durante a inserção dos elementos nas tabelas hash por endereçamento aberto. O foco principal foi medir o número de colisões ocorridas em diferentes condições de carga, fornecendo informações sobre a eficiência de cada função hash.
+              A análise deste projeto foi realizada a partir das métricas obtidas durante a inserção dos elementos nas tabelas hash por endereçamento aberto. O foco principal foi medir o número de colisões ocorridas em diferentes condições de carga, fornecendo informações sobre a eficiência de cada função hash.
           </p>
 
         <h3>Funcionamento da função <code>insert</code> na HashTable</h3>
           <p>
-          A função <code>insert</code> insere um elemento na tabela hash calculando primeiramente o endereço da chave por meio da função hash selecionada.  
+            A função <code>insert</code> insere um elemento na tabela hash calculando primeiramente o endereço da chave por meio da função hash selecionada.  
           Se o endereço estiver livre, o elemento é inserido diretamente. Em caso de colisão, a função procura a próxima posição disponível seguindo uma sequência linear (ou outro método de sondagem) até encontrar espaço livre. Cada colisão é registrada para posterior análise.
           </p>
 
         <h3>Comportamento dos dados</h3>
           <p>
-            Os experimentos foram realizados utilizando diferentes tipos de carga para avaliar a distribuição dos elementos:  
+              Os experimentos foram realizados utilizando diferentes tipos de carga para avaliar a distribuição dos elementos:  
             <ul>
               <li><strong>Chaves primos:</strong> analisam o comportamento em entradas numéricas não consecutivas, com baixa probabilidade de padrão repetitivo.</li>
               <li><strong>Chaves sequenciais:</strong> verificam como funções hash lidam com entradas ordenadas e possíveis agrupamentos, podendo gerar mais colisões dependendo da função.</li>
               <li><strong>Chaves aleatórias sem repetição:</strong> simulam situações reais com distribuição uniforme, permitindo medir a eficiência e estabilidade das funções hash.</li>
             </ul>
-            A partir dessa análise, é possível compreender como cada função hash se comporta em diferentes cenários e quais fatores influenciam diretamente o número de colisões e a distribuição dos elementos na tabela.
+              A partir dessa análise, é possível compreender como cada função hash se comporta em diferentes cenários e quais fatores influenciam diretamente o número de colisões e a distribuição dos elementos na tabela.
           </p>
       </section>
 
@@ -132,13 +156,13 @@
       <section id="conclusao" class="card">
         <h2>Conclusão</h2>
         <p>
-          Este estudo permitiu compreender e avaliar o desempenho de diferentes funções hash em tabelas hash por endereçamento aberto, utilizando cargas variadas e métricas específicas, como o número de colisões. Através da metodologia adotada, foi possível gerar dados consistentes e confiáveis, fornecendo insights sobre a eficiência e robustez das funções analisadas.  
+            Este estudo permitiu compreender e avaliar o desempenho de diferentes funções hash em tabelas hash por endereçamento aberto, utilizando cargas variadas e métricas específicas, como o número de colisões. Através da metodologia adotada, foi possível gerar dados consistentes e confiáveis, fornecendo insights sobre a eficiência e robustez das funções analisadas.  
         </p>
         <p>
-          A análise dos resultados indicou que a distribuição das chaves e o tipo de função hash influenciam diretamente a ocorrência de colisões e a uniformidade da tabela. Funções como a divisão e a multiplicação apresentam comportamentos distintos dependendo do padrão de entrada, enquanto abordagens mais sofisticadas, como shift-XOR e TCR, demonstram maior estabilidade em diferentes cenários.  
+            A análise dos resultados indicou que a distribuição das chaves e o tipo de função hash influenciam diretamente a ocorrência de colisões e a uniformidade da tabela. Funções como a divisão e a multiplicação apresentam comportamentos distintos dependendo do padrão de entrada, enquanto abordagens mais sofisticadas, como shift-XOR e TCR, demonstram maior estabilidade em diferentes cenários.  
         </p>
         <p>
-          Em resumo, este trabalho reforça a importância de escolher adequadamente a função hash e considerar a natureza dos dados a serem armazenados, contribuindo para a implementação de sistemas mais eficientes e confiáveis, com menor número de colisões e melhor desempenho em operações de inserção e busca.
+            Em resumo, este trabalho reforça a importância de escolher adequadamente a função hash e considerar a natureza dos dados a serem armazenados, contribuindo para a implementação de sistemas mais eficientes e confiáveis, com menor número de colisões e melhor desempenho em operações de inserção e busca.
         </p>
       </section>
 
@@ -175,7 +199,7 @@
 
 
         <p>
-          Agradecemos a todos que colaboraram direta ou indiretamente no desenvolvimento deste projeto, em especial à equipe de apoio técnico e acadêmico que forneceu orientação e feedback valioso.
+            Agradecemos a todos que colaboraram direta ou indiretamente no desenvolvimento deste projeto, em especial à equipe de apoio técnico e acadêmico que forneceu orientação e feedback valioso.
         </p>
 </section>
 
