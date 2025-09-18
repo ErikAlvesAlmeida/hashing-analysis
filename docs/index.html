@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Análise de Funções Hash</title>
   <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
 
   <!-- Header -->
@@ -33,40 +35,48 @@
       <!-- Introdução -->
       <section id="introducao" class="card">
         <h2>Introdução</h2>
-        <p>
-          O objetivo deste estudo é avaliar o desempenho de diferentes funções hash em uma tabela hash por endereçamento aberto. 
-          Para isso, foram utilizados diferentes tipos de cargas e métricas, com foco no número de colisões e na variância das inserções.  
+        <p class = "space">
+          O objetivo deste estudo é avaliar o desempenho de diferentes funções hash em uma tabela hash por endereçamento
+          aberto.
+          Para isso, foram utilizados diferentes tipos de cargas e métricas, com foco no número de colisões e na
+          variância das inserções.
         </p>
-        <p>
-          Ao longo do trabalho, cada função hash será apresentada, testada e comparada, de modo a compreender seus pontos fortes e limitações em diferentes cenários.  
+        <p class = "space">
+          Ao longo do trabalho, cada função hash será apresentada, testada e comparada, de modo a compreender seus
+          pontos fortes e limitações em diferentes cenários.
         </p>
       </section>
 
       <!-- Metodologia -->
       <section id="metodologia" class="card">
         <h2>Metodologia Geral</h2>
-        <p>
-          Neste estudo, adotamos uma abordagem experimental para analisar o desempenho de funções hash utilizando uma tabela hash por endereçamento aberto.  
+        <p class = "space">
+          Neste estudo, adotamos uma abordagem experimental para analisar o desempenho de funções hash utilizando uma
+          tabela hash por endereçamento aberto.
         </p>
-        <p>
-          Para gerar os dados de teste, utilizamos um script em Python que criou cargas de diferentes tamanhos e padrões de chaves, permitindo avaliar as funções hash sob variados fatores de carga e cenários de acesso.  
+        <p class = "space">
+          Para gerar os dados de teste, utilizamos um script em Python que criou cargas de diferentes tamanhos e padrões
+          de chaves, permitindo avaliar as funções hash sob variados fatores de carga e cenários de acesso.
         </p>
-        <p>
-          Cada experimento consistiu em inserir os elementos na tabela e contar o número de colisões, fornecendo métricas que foram utilizadas na análise do desempenho.  
+        <p class = "space">
+          Cada experimento consistiu em inserir os elementos na tabela e contar o número de colisões, fornecendo
+          métricas que foram utilizadas na análise do desempenho.
         </p>
-        <p>
-          A tabela hash foi implementada de forma que cada posição armazenasse apenas um elemento. Em caso de colisão, o próximo espaço disponível era utilizado para inserir o novo elemento, seguindo uma sequência linear.  
+        <p class = "space">
+          A tabela hash foi implementada de forma que cada posição armazenasse apenas um elemento. Em caso de colisão, o
+          próximo espaço disponível era utilizado para inserir o novo elemento, seguindo uma sequência linear.
         </p>
       </section>
 
       <!-- Funções -->
       <section id="funcoes" class="card">
         <h2>Funções</h2>
-        <p>
-          As funções hash têm como objetivo transformar uma chave de entrada em um endereço na tabela hash, buscando distribuir os elementos de forma uniforme e reduzir colisões.  
+        <p class = "space">
+          As funções hash têm como objetivo transformar uma chave de entrada em um endereço na tabela hash, buscando
+          distribuir os elementos de forma uniforme e reduzir colisões.
           Neste estudo, foram analisadas cinco funções hash clássicas:
         </p>
-        <ul>
+        <ul class = "dados">
           <li>Divisão</li>
           <li>Multiplicação</li>
           <li>Folding</li>
@@ -74,80 +84,88 @@
           <li>TCR (Teorema Chinês do Resto)</li>
         </ul>
 
-        <h3>1. Função da Divisão</h3>
-        <p>
-          Calcula o endereço como o resto da divisão da chave pelo tamanho da tabela (<code>m</code>). É simples e eficiente, mas pode gerar padrões indesejados se <code>m</code> não for bem escolhido.  
+        <h3 class = "space">1. Função da Divisão</h3>
+        <p class = "dados">
+          Calcula o endereço como o resto da divisão da chave pelo tamanho da tabela (<code>m</code>). É simples e
+          eficiente, mas pode gerar padrões indesejados se <code>m</code> não for bem escolhido.
         </p>
-        <p><strong>Exemplo:</strong> Chave = 123, m = 10 → endereço = 123 mod 10 = 3.</p>
+        <p class = "dados"><strong>Exemplo:</strong> Chave = 123, m = 10 → endereço = 123 mod 10 = 3.</p>
 
-        <h3>2. Função da Multiplicação</h3>
-        <p>
-          Multiplica a chave por uma constante <code>0 &lt; A &lt; 1</code>, extrai a parte fracionária e multiplica por <code>m</code>. Essa técnica reduz padrões repetitivos.  
+        <h3 class = "space">2. Função da Multiplicação</h3>
+        <p class = "dados">
+          Multiplica a chave por uma constante <code>0 &lt; A &lt; 1</code>, extrai a parte fracionária e multiplica por
+          <code>m</code>. Essa técnica reduz padrões repetitivos.
         </p>
-        <p><strong>Exemplo:</strong> Chave = 123, A = 0.618, m = 10 → endereço = floor(10 * frac(123 * 0.618)) = 1.</p>
+        <p class = "dados"><strong>Exemplo:</strong> Chave = 123, A = 0.618, m = 10 → endereço = floor(10 * frac(123 * 0.618)) = 1.</p>
 
-        <h3>3. Função Folding</h3>
-        <p>
-          Divide a chave em partes menores, soma essas partes e aplica <code>mod m</code>. É útil para chaves longas ou numéricas grandes.  
+        <h3 class = "space">3. Função Folding</h3>
+        <p class = "dados">
+          Divide a chave em partes menores, soma essas partes e aplica <code>mod m</code>. É útil para chaves longas ou
+          numéricas grandes.
         </p>
-        <p><strong>Exemplo:</strong> Chave = 123456, m = 10 → (123 + 456 = 579) → 579 mod 10 = 9.</p>
+        <p class = "dados"><strong>Exemplo:</strong> Chave = 123456, m = 10 → (123 + 456 = 579) → 579 mod 10 = 9.</p>
 
-        <h3>4. Função Shift-XOR</h3>
-        <p>
-          Trabalha em nível binário, deslocando bits e aplicando a operação XOR. Gera endereços dispersos e difíceis de prever.  
+        <h3 class = "space">4. Função Shift-XOR</h3>
+        <p class = "dados">
+          Trabalha em nível binário, deslocando bits e aplicando a operação XOR. Gera endereços dispersos e difíceis de
+          prever.
         </p>
-        <p><strong>Exemplo:</strong> Chave binária = 10110110 → após shift e XOR → endereço = 6 (mod m).</p>
+        <p class = "dados"><strong>Exemplo:</strong> Chave binária = 10110110 → após shift e XOR → endereço = 6 (mod m).</p>
 
-        <h3>5. Função TCR (Teorema Chinês do Resto)</h3>
-        <p>
-          Utiliza restos de divisões por números primos distintos para calcular o endereço.  
+        <h3 class = "space">5. Função TCR (Teorema Chinês do Resto)</h3>
+        <p class = "dados">
+          Utiliza restos de divisões por números primos distintos para calcular o endereço.
         </p>
-        <p><strong>Exemplo:</strong> Chave = 35, m1 = 3, m2 = 5 → restos = (2, 0) → combinação via TCR → endereço final = 2.</p>
+        <p class = "dados"><strong>Exemplo:</strong> Chave = 35, m1 = 3, m2 = 5 → restos = (2, 0) → combinação via TCR → endereço final
+          = 2.</p>
       </section>
 
       <section id="resultados" class="card">
 
-      <h2>Resultados</h2>
-        <p>
-          Nesta seção são apresentados os gráficos gerados a partir dos experimentos realizados. 
+        <h2>Resultados</h2>
+        <p class = "space">
+          Nesta seção são apresentados os gráficos gerados a partir dos experimentos realizados.
           Os resultados estão organizados de acordo com o tipo de carga utilizada e o tipo de métrica analisada.
         </p>
 
         <!-- Gráficos por Tipo de Carga -->
-        <h3>1. Gráficos por Tipo de Carga</h3>
+        <h3 class = "space">1. Gráficos por Tipo de Carga</h3>
         <div class="grafico-container">
           <figure>
             <img src="graficos/colisoes/colisoes_30_porcent.jpg" alt="Colisões Com 30 % de Carga" class="grafico-img">
-            <figcaption>Distribuição de colisões com chaves primos</figcaption>
+            <figcaption>Número de colisões com 30% de fator de carga</figcaption>
           </figure>
 
           <figure>
             <img src="graficos/colisoes/colisoes_50_porcent.jpg" alt="Colisões Com 50 % de Carga" class="grafico-img">
-            <figcaption>Distribuição de colisões com chaves sequenciais</figcaption>
+            <figcaption>Número de colisões com 50% de fator de carga</figcaption>
           </figure>
 
           <figure>
             <img src="graficos/colisoes/colisoes_80_porcent.jpg" alt="Colisões com 80 % de Carga" class="grafico-img">
-            <figcaption>Distribuição de colisões com chaves aleatórias</figcaption>
+            <figcaption>Número de colisões com 80% de fator de carga</figcaption>
           </figure>
         </div>
 
         <!-- Gráficos por Tipo de Métrica -->
-        <h3>2. Gráficos por Tipo de Métrica</h3>
+        <h3 class = "space">2. Gráficos por Tipo de Métrica</h3>
         <div class="grafico-container">
           <figure>
-            <img src="graficos/variancia/variancia_30_porcent.jpg" alt="Variância com chaves primos" class="grafico-img">
-            <figcaption>Variância no número de colisões - chaves primos</figcaption>
+            <img src="graficos/variancia/variancia_30_porcent.jpg" alt="Variância com chaves primos"
+              class="grafico-img">
+            <figcaption>Variância no número de colisões - 30% fator de carga</figcaption>
           </figure>
 
           <figure>
-            <img src="graficos/variancia/variancia_50_porcent.jpg" alt="Variância com chaves sequenciais" class="grafico-img">
-            <figcaption>Variância no número de colisões - chaves sequenciais</figcaption>
+            <img src="graficos/variancia/variancia_50_porcent.jpg" alt="Variância com chaves sequenciais"
+              class="grafico-img">
+            <figcaption>Variância no número de colisões - 50% de fator de carga</figcaption>
           </figure>
 
           <figure>
-            <img src="graficos/variancia/variancia_80_porcent.jpg" alt="Variância com chaves aleatórias" class="grafico-img">
-            <figcaption>Variância no número de colisões - chaves aleatórias</figcaption>
+            <img src="graficos/variancia/variancia_80_porcent.jpg" alt="Variância com chaves aleatórias"
+              class="grafico-img">
+            <figcaption>Variância no número de colisões - 80% de fator de carga</figcaption>
           </figure>
         </div>
       </section>
@@ -155,36 +173,42 @@
       <!-- Análise -->
       <section id="analise" class="card">
         <h2>Análise</h2>
-        <p>
-          A análise foi baseada nas métricas obtidas durante a inserção dos elementos. O foco principal foi medir o número de colisões em diferentes condições de carga.  
+        <p class = "space">
+          A análise foi baseada nas métricas obtidas durante a inserção dos elementos. O foco principal foi medir o
+          número de colisões em diferentes condições de carga.
         </p>
 
-        <h3>Funcionamento da função <code>insert</code></h3>
-        <p>
-          A função <code>insert</code> insere um elemento calculando o endereço pela função hash.  
-          Se a posição estiver livre, o elemento é armazenado. Caso contrário, aplica-se sondagem linear até encontrar espaço.  
+        <h3 class = "space">Funcionamento da função <code>insert</code></h3>
+        <p class = "dados">
+          A função <code>insert</code> insere um elemento calculando o endereço pela função hash.
+          Se a posição estiver livre, o elemento é armazenado. Caso contrário, aplica-se sondagem linear até encontrar
+          espaço.
         </p>
 
-        <h3>Comportamento dos dados</h3>
-        <ul>
+        <h3 class = "space">Comportamento dos dados</h3>
+        <ul class = "dados">
           <li><strong>Primos:</strong> Entradas não consecutivas, menor probabilidade de padrões repetitivos.</li>
           <li><strong>Sequenciais:</strong> Tendem a gerar agrupamentos, dependendo da função hash.</li>
-          <li><strong>Aleatórios sem repetição:</strong> Simulam cenários reais, permitindo avaliar estabilidade das funções.</li>
+          <li><strong>Aleatórios sem repetição:</strong> Simulam cenários reais, permitindo avaliar estabilidade das
+            funções.</li>
         </ul>
       </section>
 
       <!-- Conclusão -->
       <section id="conclusao" class="card">
         <h2>Conclusão</h2>
-        <p>
-          Este estudo permitiu avaliar diferentes funções hash em tabelas por endereçamento aberto, considerando cargas variadas e métricas como colisões.  
+        <p class = "space">
+          Este estudo permitiu avaliar diferentes funções hash em tabelas por endereçamento aberto, considerando cargas
+          variadas e métricas como colisões.
         </p>
-        <p>
-          A análise mostrou que a escolha da função e a natureza dos dados influenciam diretamente na eficiência.  
-          Funções simples como divisão e multiplicação são rápidas, mas podem ter limitações. Já funções como shift-XOR e TCR apresentaram maior estabilidade.  
+        <p class = "space">
+          A análise mostrou que a escolha da função e a natureza dos dados influenciam diretamente na eficiência.
+          Funções simples como divisão e multiplicação são rápidas, mas podem ter limitações. Já funções como shift-XOR
+          e TCR apresentaram maior estabilidade.
         </p>
-        <p>
-          Em resumo, a escolha da função hash adequada é essencial para reduzir colisões e garantir melhor desempenho em sistemas reais.  
+        <p class = "space">
+          Em resumo, a escolha da função hash adequada é essencial para reduzir colisões e garantir melhor desempenho em
+          sistemas reais.
         </p>
       </section>
 
@@ -192,8 +216,8 @@
       <section id="bibliografia" class="card">
         <h2>Créditos e Bibliografia</h2>
 
-        <h3>Participantes</h3>
-        <ul>
+        <h3 class = "space">Participantes</h3>
+        <ul class = "dados">
           <li><strong>Pedro Henrique Pereira da Silva</strong></li>
           <li><strong>Bruno Rafael Medeiros Silvestre</strong></li>
           <li><strong>Ryan Victor Lucena</strong></li>
@@ -201,20 +225,22 @@
           <li><strong>Erick Henrique Amorim da Silva</strong></li>
         </ul>
 
-        <h3>Referências Bibliográficas</h3>
-        <ul>
-          <li>CORMEN, T. H.; LEISERSON, C. E.; RIVEST, R. L.; STEIN, C. <em>Introduction to Algorithms</em>. 3ª ed. MIT Press, 2009.</li>
+        <h3 class = "space">Referências Bibliográficas</h3>
+        <ul class = "dados">
+          <li>CORMEN, T. H.; LEISERSON, C. E.; RIVEST, R. L.; STEIN, C. <em>Introduction to Algorithms</em>. 3ª ed. MIT
+            Press, 2009.</li>
           <li>KNUDSON, K. <em>Data Structures and Algorithms in Java</em>. Pearson, 2018.</li>
           <li>Sedgewick, R.; Wayne, K. <em>Algorithms</em>. 4ª ed. Addison-Wesley, 2011.</li>
-          <li>Site do professor <strong>João Arthur</strong>: 
-            <a href="https://joaoarthurbm.github.io/eda/" target="_blank">https://joaoarthurbm.github.io/eda/</a>. 
-            Acesso em: 14 de setembro de 2025.</li>
+          <li>Site do professor <strong>João Arthur</strong>:
+            <a href="https://joaoarthurbm.github.io/eda/" target="_blank">https://joaoarthurbm.github.io/eda/</a>.
+            Acesso em: 14 de setembro de 2025.
+          </li>
         </ul>
 
-        <h3>Agradecimentos</h3>
-        <p>
-          Agradecemos a todos que colaboraram direta ou indiretamente no desenvolvimento deste projeto, 
-          em especial à equipe de apoio técnico e acadêmico que forneceu orientação e feedback valioso.  
+        <h3 class = "space">Agradecimentos</h3>
+        <p class = "dados">
+          Agradecemos a todos que colaboraram direta ou indiretamente no desenvolvimento deste projeto,
+          em especial à equipe de apoio técnico e acadêmico que forneceu orientação e feedback valioso.
         </p>
       </section>
 
@@ -223,4 +249,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>
