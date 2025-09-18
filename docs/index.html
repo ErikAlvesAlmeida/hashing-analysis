@@ -105,49 +105,52 @@
         <p><strong>Exemplo:</strong> Chave = 35, m1 = 3, m2 = 5 → restos = (2, 0) → combinação via TCR → endereço final = 2.</p>
       </section>
 
-      <!-- Resultados -->
       <section id="resultados" class="card">
+
       <h2>Resultados</h2>
         <p>
           Nesta seção são apresentados os gráficos gerados a partir dos experimentos realizados. 
-          Os resultados estão organizados de acordo com o tipo de carga utilizada e o tipo de métrica analisada 
-          (número de colisões ou variância).
+          Os resultados estão organizados de acordo com o tipo de carga utilizada e o tipo de métrica analisada.
         </p>
 
-      <!-- Gráficos por Tipo de Carga -->
-      <h3>1. Gráficos por Fatores de Carga</h3>
-      <div class="grafico-container">
-        <figure>
-          <img src="graficos/colisoes_30_%.jpg" alt="Gráfico - Fator 30 %" class="grafico-img">
-          <figcaption>Distribuição de colisões com chaves primos</figcaption>
-        </figure>
+        <!-- Gráficos por Tipo de Carga -->
+        <h3>1. Gráficos por Tipo de Carga</h3>
+        <div class="grafico-container">
+          <figure>
+            <img src="graficos/colisoes/colisoes_30_porcent.jpg" alt="Colisões Com 30 % de Carga" class="grafico-img">
+            <figcaption>Distribuição de colisões com chaves primos</figcaption>
+          </figure>
 
-        <figure>
-          <img src="graficos/colisoes_50_%.jpg" alt="Gráfico - Fator 50 %" class="grafico-img">
-          <figcaption>Distribuição de colisões com chaves sequenciais</figcaption>
-        </figure>
+          <figure>
+            <img src="graficos/colisoes/colisoes_50_porcent.jpg" alt="Colisões Com 50 % de Carga" class="grafico-img">
+            <figcaption>Distribuição de colisões com chaves sequenciais</figcaption>
+          </figure>
 
-        <figure>
-          <img src="graficos/colisoes_80_%.jpg" alt="Gráfico - Fator 80 %" class="grafico-img">
-          <figcaption>Distribuição de colisões com chaves aleatórias</figcaption>
-        </figure>
-      </div>
+          <figure>
+            <img src="graficos/colisoes/colisoes_80_porcent.jpg" alt="Colisões com 80 % de Carga" class="grafico-img">
+            <figcaption>Distribuição de colisões com chaves aleatórias</figcaption>
+          </figure>
+        </div>
 
-      <!-- Gráficos por Tipo de Métrica -->
-      <h3>2. Gráficos por Tipo de Métrica</h3>
-      <div class="grafico-container">
-        <figure>
-          <img src="graficos/metricas-colisoes.jpg" alt="Gráfico - Número de Colisões" class="grafico-img">
-          <figcaption>Número médio de colisões por função hash</figcaption>
-        </figure>
+        <!-- Gráficos por Tipo de Métrica -->
+        <h3>2. Gráficos por Tipo de Métrica</h3>
+        <div class="grafico-container">
+          <figure>
+            <img src="graficos/variancia/variancia_30_porcent.jpg" alt="Variância com chaves primos" class="grafico-img">
+            <figcaption>Variância no número de colisões - chaves primos</figcaption>
+          </figure>
 
-        <figure>
-          <img src="graficos/metricas-variancia.jpg" alt="Gráfico - Variância" class="grafico-img">
-          <figcaption>Variância no número de colisões por função hash</figcaption>
-        </figure>
-      </div>
-    </section>
+          <figure>
+            <img src="graficos/variancia/variancia_50_porcent.jpg" alt="Variância com chaves sequenciais" class="grafico-img">
+            <figcaption>Variância no número de colisões - chaves sequenciais</figcaption>
+          </figure>
 
+          <figure>
+            <img src="graficos/variancia/variancia_80_porcent.jpg" alt="Variância com chaves aleatórias" class="grafico-img">
+            <figcaption>Variância no número de colisões - chaves aleatórias</figcaption>
+          </figure>
+        </div>
+      </section>
 
       <!-- Análise -->
       <section id="analise" class="card">
