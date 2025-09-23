@@ -108,7 +108,7 @@ for size, lf in load_factors.items():
     plt.axhline(y=mean_variance, color='r', linestyle='--',
                 label=f'Média: {mean_variance:.2f}')
     plt.xticks(x, hash_types)
-    plt.ylim(0, 550)
+    plt.ylim(0, 11)
     plt.title(f"Variância - Load Factor {lf}\nTabela Hash com 10.007 posições")
     plt.xlabel("Funções Hash")
     plt.ylabel("Variância")
