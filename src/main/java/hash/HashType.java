@@ -117,14 +117,10 @@ public enum HashType implements HashFunction {
     SHIFT_XOR{
         @Override
         public int hash(int key, int tableSize) {
-            int h = 0;
-            while (key > 0) {
-               int digit = key % 10;
-                int desloca = digit << 1;
-                h ^= desloca;
-             key /= 10;
-        }
-        return Math.abs(h) % tableSize;
+            key ^= (key << 13);
+            key ^= (key >>> 17);
+            key ^= (key << 5);
+            return Math.abs(key) % tableSize;
         }
     };
 

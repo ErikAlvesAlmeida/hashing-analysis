@@ -38,27 +38,25 @@ public class HashTable {
      */
     public void put(Integer key, int value){
         int hash = this.hashFunction.hash(key, SIZE_TABLE);
+        if (this.frequencia[hash] == null) {
+            this.frequencia[hash] = new Pair(hash, 0);
+        }
+        this.frequencia[hash].value++;
+
         int probing = 0;
-
         while(probing < this.table.length) {
-            
             int pos = (hash + probing) % this.table.length;
-
             if(this.table[pos] == null) {
                 this.table[pos] = new Pair(key, value);
-                this.frequencia[pos] = new Pair(key, 1);
                 this.size++;
                 return;
             } else if (Objects.equals(this.table[pos].key, key)){
                 this.table[pos].value = value;
                 return;
             }
-
-            if (probing == 0) {
+            if (probing == 0) { 
                 this.collisions++;
-                this.frequencia[pos].value++;
             }
-
             probing++;
         }
     }
