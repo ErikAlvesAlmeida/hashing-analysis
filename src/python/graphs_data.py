@@ -92,7 +92,7 @@ for size, lf in load_factors.items():
     subset = df[df['Size'] == size]
     if subset.empty:
         continue
-
+    mean_variance = subset['Variance'].mean()
     plt.figure(figsize=(10, 6))
     hash_types = subset['HashType'].unique()
     datasets = subset['Dataset_Name'].unique()
@@ -105,7 +105,8 @@ for size, lf in load_factors.items():
         heights = [data.at[ht, 'Variance'] if ht in data.index else 0
                    for ht in hash_types]
         plt.bar(x + offsets[i], heights, width=bar_width, label=dataset)
-
+    plt.axhline(y=mean_variance, color='r', linestyle='--',
+                label=f'Média: {mean_variance:.2f}')
     plt.xticks(x, hash_types)
     plt.ylim(0, 550)
     plt.title(f"Variância - Load Factor {lf}\nTabela Hash com 10.007 posições")
