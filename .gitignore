@@ -15,7 +15,7 @@ bin/
 *.class
 
 # Dados gerados de execução
-data/
+data/keys
 
 # Config do VSCode
 .vscode/
