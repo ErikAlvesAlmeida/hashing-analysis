@@ -16,31 +16,18 @@ repositories {
 task createDirs {
     def keysDir = file('data/keys')
     def outputDir = file('data/output')
-    def outputFile = file('data/output/output.txt')
     def resultsDir = file('results')
-    def resultsCollisionDir = file('results/collision')
-    def resultsVarianceDir = file('results/variance')
 
     doLast {
         if (!keysDir.exists()) {
-            keysDilsr.mkdirs()
+            keysDir.mkdirs()
         }
         if (!outputDir.exists()) {
             outputDir.mkdirs()
         }
-        if(!outputFile.exists()) {
-            outputFile.mkdirs()
-        }
         if (!resultsDir.exists()) {
             resultsDir.mkdirs()
         }
-        if (!resultsCollisionDir.exists()) {
-            resultsCollisionDir.mkdirs()
-        }
-        if (!resultsVarianceDir.exists()) {
-            resultsVarianceDir.mkdirs()
-        }
-        
     }
 }
 
@@ -58,7 +45,6 @@ task runAnalysis(type: JavaExec) {
     workingDir project.rootDir
     classpath sourceSets.main.runtimeClasspath
     mainClass = 'benchmark.CollisionCounter'
-    
 }
 
 task generateGraphs(type: Exec) {
