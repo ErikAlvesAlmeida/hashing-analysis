@@ -4,7 +4,7 @@ Este projeto apresenta uma análise comparativa de cinco funções de hash (Divi
 
 O objetivo é explorar como cada função se comporta sob diferentes fatores de carga (30%, 50%, 80%) em uma tabela hash de endereçamento aberto, buscando eficiência e uma distribuição uniforme.
 
-A análise completa e as conclusões estão publicadas nesta GitHub Page (deixe esse github page com espaço pra colocar o link da página).
+A análise completa e as conclusões estão publicadas nesta [_GitHub Page_](https://erikalvesalmeida.github.io/hashing-analysis/ ).
 
 ### Pré-requisitos
 Antes de começar, garanta que você tenha as seguintes ferramentas instaladas em sua máquina:
