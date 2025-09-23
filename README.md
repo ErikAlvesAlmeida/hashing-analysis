@@ -11,7 +11,7 @@ Antes de começar, garanta que você tenha as seguintes ferramentas instaladas e
 
 - *Git*: Para clonar o repositório.
 
-- *Java Development Kit (JDK)*: Versão 11 ou superior.
+- *Java Development Kit (JDK)*: Versão 17 ou superior.
 
 - *Gradle*: Para automação da compilação e execução dos testes.
 
