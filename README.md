@@ -15,7 +15,7 @@ Antes de começar, garanta que você tenha as seguintes ferramentas instaladas e
 
 - *Gradle*: Para automação da compilação e execução dos testes.
 
-- *Python*: Versão 3.6 ou superior.
+- *Python*: Versão 3.11 ou superior.
 
 Você pode verificar as instalações com os seguintes comandos no seu terminal:
 
