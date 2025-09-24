@@ -362,7 +362,7 @@
       <h6>Fator de Carga: 80% (8.000 chaves)</h6>
       <p>Neste cenário de estresse máximo, <code class="refs">FOLDING</code> atinge um colapso de performance. Dentro do
         grupo de funções de bom
-        desempenho, a função <code class="refs">MULTIPLICATION</code> exibe uma performance notavelmente superior para
+        desempenho, as funções <code class="refs">DIVISION, MULTIPLICATION e TCR</code> exibem uma performance notavelmente superior para
         as chaves sequenciais em
         comparação com as outras.</p>
       <h4>5.2. Análise da Variância</h4>
@@ -391,16 +391,12 @@
         péssimo desempenho em colisões.</p>
     </section>
     <section id="analise">
-      <h2 class="border-bottom pb-2 mb-4">Análise Comparativa das Funções Hash</h2>
+      <h2 class="border-bottom pb-2 mb-4">6. Análise Comparativa das Funções Hash</h2>
       <p>A análise dos novos resultados permite traçar um perfil definitivo sobre a eficácia, robustez e as fraquezas de
         cada uma das cinco funções de hash estudadas.</p>
-      <h4 class="border-bottom pb-2 mb-4"><code class="refs">DIVISION, TCR e SHIFT_XOR:</code></h4>
-      <p>Essas três funções formaram um grupo de desempenho consistentemente alto e muito similar. Elas se mostraram
+      <h4 class="border-bottom pb-2 mb-4"><code class="refs">DIVISION, MULTIPLICATION, TCR e SHIFT_XOR:</code></h4>
+      <p>Essas quatro funções formaram um grupo de desempenho consistentemente alto e muito similar. Elas se mostraram
         robustas para todos os tipos de chaves e fatores de carga, provando serem escolhas seguras e confiáveis.</p>
-      <h4 class="border-bottom pb-2 mb-4"><code class="refs">MULTIPLICATION:</code></h4>
-      <p>Esta função também pertence ao grupo de elite, mas com um diferencial notável: sua performance excepcional com
-        chaves sequenciais em alta carga. Isso sugere que sua implementação é particularmente eficaz em quebrar padrões
-        aritméticos simples.</p>
       <h4 class="border-bottom pb-2 mb-4"><code class="refs">FOLDING:</code></h4>
       <p>Os resultados confirmam que esta implementação é fundamentalmente inadequada para o universo de chaves inteiras
         testado. Tanto o número de colisões quanto a variância foram ordens de magnitude piores que as outras funções em
@@ -456,7 +452,7 @@
       </div>
     </section>
     <section id="aplicacao">
-      <h2 class="border-bottom pb-2 mb-4">Aplicações no Mundo Real</h2>
+      <h2 class="border-bottom pb-2 mb-4">7. Aplicações no Mundo Real</h2>
       <p>A eficiência das tabelas hash, quando implementadas com uma função de hash de qualidade, as torna
         indispensáveis
         no mundo da computação. A capacidade de encontrar uma informação em tempo constante (O(1)) é um requisito
