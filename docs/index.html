@@ -113,7 +113,8 @@
         A ideia é simples: se a posição ideal para uma chave (calculada pela função de hash) já estiver ocupada,
         procuramos sistematicamente por outro espaço vago dentro da mesma tabela. Esse processo de busca por um novo
         local é chamado de sondagem (probing). Para este trabalho, utilizamos a sondagem linear, que consiste em
-        verificar a próxima posição sequencial (`índice + 1`, `índice + 2`, ...) até que um espaço livre seja
+        verificar a próxima posição sequencial (<code class="refs">índice + 1, índice + 2, ...</code>) até que um espaço
+        livre seja
         encontrado.
       </p>
       <h4 class="border-bottom pb-2 mb-4">2.2. A Operação de Inserção (put) e o Impacto das Colisões</h4>
@@ -136,7 +137,8 @@
       <h4 class="border-bottom pb-2 mb-4">2.3. Funções Hash Analisadas</h4>
       <p><strong>Método da Divisão:</strong> A abordagem mais simples e intuitiva. O índice é simplesmente o resto da
         divisão da chave
-        pelo tamanho da tabela (`índice = chave % tamanho_tabela`). Sua principal fraqueza é ser muito sensível a
+        pelo tamanho da tabela (<code class="refs">índice = chave % tamanho_tabela</code>). Sua principal fraqueza é ser
+        muito sensível a
         padrões nos dados de entrada, especialmente se o tamanho da tabela for mal escolhido.
         <br>
         <strong>Método da Multiplicação:</strong> Um método mais robusto. A chave é multiplicada por uma constante
@@ -175,7 +177,9 @@
       <ul>
         <li>Linguagens: Java (JDK 17) para a implementação da tabela hash e dos benchmarks; e Python 3 para a geração de
           dados e gráficos.</li>
-        <li>Bibliotecas Python: `pandas` para manipulação de dados e `matplotlib` para a criação dos gráficos.</li>
+        <li>Bibliotecas Python: <i><strong>pandas</strong></i> para manipulação de dados e
+          <i><strong>matplotlib</strong></i> para a criação dos gráficos.
+        </li>
         <li>Automação: Gradle foi utilizado para automatizar todo o fluxo de compilação, teste e geração de resultados,
           garantindo a integridade do processo.</li>
       </ul>
@@ -198,11 +202,13 @@
       <p>O processo de teste foi totalmente automatizado pela tarefa `automateAll` do Gradle, que executa a seguinte
         sequência de passos:</p>
       <ol>
-        <li>Geração de Dados: O script em Python `scripts_data.py` é executado para gerar os arquivos de carga.</li>
-        <li>Execução em Java: O programa `CollisionCounter` lê cada arquivo de carga.</li>
+        <li>Geração de Dados: O script em Python <i><strong>scripts_data.py</strong></i> é executado para gerar os
+          arquivos de carga.</li>
+        <li>Execução em Java: O programa <i><strong>CollisionCounter</strong></i> lê cada arquivo de carga.</li>
         <li>Teste das Funções: Para cada carga, o programa insere todas as chaves, repetindo o processo para cada uma
           das cinco funções de hash.</li>
-        <li>Registro dos Resultados: As métricas de desempenho são salvas em um arquivo de saída (`output.txt`).</li>
+        <li>Registro dos Resultados: As métricas de desempenho são salvas em um arquivo de saída
+          (<i><strong>output.txt</strong></i>).</li>
         <li>Geração dos Gráficos: Um script em Python lê o arquivo de saída e gera os histogramas comparativos.</li>
       </ol>
       <h4 class="border-bottom pb-2 mb-4">3.4. Métricas de Desempenho Analisadas</h4>
@@ -217,7 +223,8 @@
     <section id="implementacao">
       <h2 class="border-bottom pb-2 mb-4">Implementação</h2>
       <p>A seguir, vamos apresentar o código por trás do nosso estudo. A implementação foi dividida em duas partes
-        principais: a estrutura da `HashTable`, que serviu como base para todos os testes, e as cinco funções de hash,
+        principais: a estrutura da <code class="refs">HashTable</code>, que serviu como base para todos os testes, e as
+        cinco funções de hash,
         que foram desenvolvidas como estratégias independentes e intercambiáveis. Esse design modular foi uma decisão de
         projeto fundamental para garantir que pudéssemos testar e comparar cada função de forma isolada e justa.</p>
       <h4 class="border-bottom pb-2 mb-4">4.1.1. Atributos Principais</h4>
@@ -332,7 +339,7 @@
         implementações das funções hash. Eles são apresentados em formato de histogramas, que comparam visualmente o
         desempenho das cinco funções hash para cada padrão de chave e fator de carga.</p>
       <h4 class="border-bottom pb-2 mb-4">5.1. Análise de Colisões</h4>
-      <img src="assets/hist_colisoes_30%-1.png" class="d-block mx-auto" alt="Descrição"
+      <img src="assets/hist_colisoes_30.png" class="d-block mx-auto" alt="Descrição"
         style="max-width: 80%; height: 50%;">
       <h6>Fator de Carga: 30% (3.000 chaves)</h6>
       <p>No cenário de baixa densidade, observa-se uma clara separação de desempenho. As funções <code
@@ -343,14 +350,14 @@
         muito inferior, com um
         número de colisões drasticamente mais alto.
       </p>
-      <img src="assets/hist_colisoes_50%-1.png" class="d-block mx-auto" alt="Descrição"
+      <img src="assets/hist_colisoes_50.png" class="d-block mx-auto" alt="Descrição"
         style="max-width: 80%; height: 50%;">
       <h6>Fator de Carga: 50% (5.000 chaves)</h6>
       <p>Com o aumento da carga, a tendência se mantém. O grupo de funções de bom desempenho vê um aumento esperado no
         número de colisões, continuando a se comportar de forma estável. A função <code class="refs">FOLDING</code>, por
         outro lado, demonstra
         uma degradação severa, com o número de colisões ultrapassando 4.000.</p>
-      <img src="assets/hist_colisoes_80%-1.png" class="d-block mx-auto" alt="Descrição"
+      <img src="assets/hist_colisoes_80.png" class="d-block mx-auto" alt="Descrição"
         style="max-width: 80%; height: 50%;">
       <h6>Fator de Carga: 80% (8.000 chaves)</h6>
       <p>Neste cenário de estresse máximo, <code class="refs">FOLDING</code> atinge um colapso de performance. Dentro do
@@ -359,7 +366,7 @@
         as chaves sequenciais em
         comparação com as outras.</p>
       <h4>5.2. Análise da Variância</h4>
-      <img src="assets/hist_variancia_30%-1.png" class="d-block mx-auto" alt="Descrição"
+      <img src="assets/hist_variancia_30.png" class="d-block mx-auto" alt="Descrição"
         style="max-width: 80%; height: 50%;">
       <h6>Fator de Carga: 30% (3.000 chaves)</h6>
       <p>O gráfico de variância explica os resultados de colisões. As quatro funções de bom desempenho apresentam uma
@@ -367,7 +374,7 @@
           class="refs">FOLDING</code> exibe uma
         variância significativamente mais alta, confirmando sua tendência a agrupar as chaves.
       </p>
-      <img src="assets/hist_variancia_50%-1.png" class="d-block mx-auto" alt="Descrição"
+      <img src="assets/hist_variancia_50.png" class="d-block mx-auto" alt="Descrição"
         style="max-width: 80%; height: 50%;">
       <h6>Fator de Carga: 50% (5.000 chaves)</h6>
       <p>A tendência se confirma. Enquanto o grupo principal mantém a variância em níveis muito baixos, a variância da
@@ -375,7 +382,7 @@
         fundamental da sua
         implementação.
       </p>
-      <img src="assets/hist_variancia_80%-1.png" class="d-block mx-auto" alt="Descrição"
+      <img src="assets/hist_variancia_80.png" class="d-block mx-auto" alt="Descrição"
         style="max-width: 80%; height: 50%;">
       <h6>Fator de Carga: 80% (8.000 chaves)</h6>
       <p>Com 80% de carga, os resultados são consistentes. As quatro funções de elite mantêm uma variância muito baixa e
