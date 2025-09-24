@@ -6,248 +6,533 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Análise de Funções Hash</title>
   <link rel="stylesheet" href="index.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"
+    defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"
+    defer></script>
 </head>
 
-<body>
+<body data-bs-spy="scroll" data-bs-target="#navbarPrincipal">
 
   <!-- Header -->
-  <header class="header">
-    <h1>Análise de Funções Hash</h1>
+  <header>
+    <nav id="navbarPrincipal" class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+      <div class="container-fluid">
+
+        <a class="navbar-brand" href="#">Análise Comparativa de Funções Hash</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#motivacao">Motivação</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#introducao">Introdução</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#metodologia">Metodologia</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#implementacao">Implementação</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#resultados">Resultados e Benchmarks</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#analise">Análise</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#aplicacao">Aplicações</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#conclusao">Conclusão</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#creditos">Créditos</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   </header>
 
+  <!-- Conteúdo da página -->
   <div class="container">
-    <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar">
-      <button class="menu-btn">☰</button>
-      <nav>
-        <a href="#introducao">Introdução</a>
-        <a href="#metodologia">Metodologia Geral</a>
-        <a href="#funcoes">Funções</a>
-        <a href="#resultados">Resultados</a>
-        <a href="#analise">Análise</a>
-        <a href="#conclusao">Conclusão</a>
-        <a href="#bibliografia">Créditos e Bibliografia</a>
-      </nav>
-    </aside>
+    <section id="motivacao">
+      <h2 class="border-bottom pb-2 mb-4">1. Motivação</h2>
 
-    <!-- Conteúdo -->
-    <main class="content">
-      <!-- Introdução -->
-      <section id="introducao" class="card">
-        <h2>Introdução</h2>
-        <p class = "space">
-          O objetivo deste estudo é avaliar o desempenho de diferentes funções hash em uma tabela hash por endereçamento
-          aberto.
-          Para isso, foram utilizados diferentes tipos de cargas e métricas, com foco no número de colisões e na
-          variância das inserções.
-        </p>
-        <p class = "space">
-          Ao longo do trabalho, cada função hash será apresentada, testada e comparada, de modo a compreender seus
-          pontos fortes e limitações em diferentes cenários.
-        </p>
-      </section>
+      <p>Tabelas hash são uma das ferramentas mais eficientes da computação para guardar e achar dados rapidamente. Na
+        teoria, elas prometem fazer isso de forma quase instantânea, o famoso O(1). No entanto, na prática,
+        enfrentamos
+        um desafio constante que pode colocar toda essa eficiência a perder: as colisões.
 
-      <!-- Metodologia -->
-      <section id="metodologia" class="card">
-        <h2>Metodologia Geral</h2>
-        <p class = "space">
-          Neste estudo, adotamos uma abordagem experimental para analisar o desempenho de funções hash utilizando uma
-          tabela hash por endereçamento aberto.
-        </p>
-        <p class = "space">
-          Para gerar os dados de teste, utilizamos um script em Python que criou cargas de diferentes tamanhos e padrões
-          de chaves, permitindo avaliar as funções hash sob variados fatores de carga e cenários de acesso.
-        </p>
-        <p class = "space">
-          Cada experimento consistiu em inserir os elementos na tabela e contar o número de colisões, fornecendo
-          métricas que foram utilizadas na análise do desempenho.
-        </p>
-        <p class = "space">
-          A tabela hash foi implementada de forma que cada posição armazenasse apenas um elemento. Em caso de colisão, o
-          próximo espaço disponível era utilizado para inserir o novo elemento, seguindo uma sequência linear.
-        </p>
-      </section>
+        Uma colisão acontece quando a função de hash tenta colocar duas chaves diferentes no mesmo lugar da tabela.
+        Quando isso ocorre com frequência, a estrutura precisa gastar tempo procurando um novo local vago, o que gera
+        "engarrafamentos" e deixa o processo mais lento. Em um cenário ruim, a tabela perde toda a sua agilidade e sua
+        vantagem sobre métodos mais simples.
 
-      <!-- Funções -->
-      <section id="funcoes" class="card">
-        <h2>Funções</h2>
-        <p class = "space">
-          As funções hash têm como objetivo transformar uma chave de entrada em um endereço na tabela hash, buscando
-          distribuir os elementos de forma uniforme e reduzir colisões.
-          Neste estudo, foram analisadas cinco funções hash clássicas:
-        </p>
-        <ul class = "dados">
-          <li>Divisão</li>
-          <li>Multiplicação</li>
-          <li>Folding</li>
-          <li>Shift-XOR</li>
-          <li>TCR (Teorema Chinês do Resto)</li>
-        </ul>
+        O componente responsável por evitar esse caos é a função de hash. Ela é o cérebro da operação, com a tarefa de
+        distribuir as chaves da forma mais espalhada e uniforme possível. Uma boa função de hash mantém a tabela
+        organizada e rápida. Uma função ruim cria desordem e lentidão.
 
-        <h3 class = "space">1. Função da Divisão</h3>
-        <p class = "dados">
-          Calcula o endereço como o resto da divisão da chave pelo tamanho da tabela (<code>m</code>). É simples e
-          eficiente, mas pode gerar padrões indesejados se <code>m</code> não for bem escolhido.
-        </p>
-        <p class = "dados"><strong>Exemplo:</strong> Chave = 123, m = 10 → endereço = 123 mod 10 = 3.</p>
+        A motivação deste projeto nasce exatamente dessa necessidade. Queremos investigar na prática: qual é o
+        verdadeiro impacto da escolha de uma função de hash no dia a dia de uma tabela? Nosso objetivo é descobrir
+        quais
+        funções são mais confiáveis para garantir que a promessa de velocidade da tabela hash não fique apenas na
+        teoria, mas se concretize na prática.</p>
+    </section>
+    <section id="introducao">
+      <h2 class="border-bottom pb-2 mb-4">2. Introdução</h2>
+      <p>Este relatório apresenta uma análise prática do desempenho de diferentes funções de hash. O objetivo é
+        investigar como a escolha de uma função impacta a distribuição de chaves em uma tabela hash, observando
+        diretamente o número de colisões e a variância das inserções. Todo o código, os dados gerados e um guia para
+        reproduzir os testes estão disponíveis no repositório do projeto no GitHub, e uma análise mais visual dos
+        resultados pode ser encontrada na página do projeto.
+      </p>
+      <h4 class="border-bottom pb-2 mb-4">2.1. Tabela Hash por Endereçamento Aberto</h4>
+      <p>
+        Quando pensamos em tabelas hash, uma das primeiras decisões do projeto é: o que fazer quando ocorre uma colisão?
+        Existem duas grandes abordagens, e a que utilizamos neste projeto é o endereçamento aberto (open addressing).
 
-        <h3 class = "space">2. Função da Multiplicação</h3>
-        <p class = "dados">
-          Multiplica a chave por uma constante <code>0 &lt; A &lt; 1</code>, extrai a parte fracionária e multiplica por
-          <code>m</code>. Essa técnica reduz padrões repetitivos.
-        </p>
-        <p class = "dados"><strong>Exemplo:</strong> Chave = 123, A = 0.618, m = 10 → endereço = floor(10 * frac(123 * 0.618)) = 1.</p>
+        Diferente do método de encadeamento, que cria uma lista ou outra estrutura de dados para cada índice da tabela,
+        o endereçamento aberto adota uma estratégia mais direta: todos os elementos são armazenados no próprio vetor
+        principal da tabela.
 
-        <h3 class = "space">3. Função Folding</h3>
-        <p class = "dados">
-          Divide a chave em partes menores, soma essas partes e aplica <code>mod m</code>. É útil para chaves longas ou
-          numéricas grandes.
-        </p>
-        <p class = "dados"><strong>Exemplo:</strong> Chave = 123456, m = 10 → (123 + 456 = 579) → 579 mod 10 = 9.</p>
+        A ideia é simples: se a posição ideal para uma chave (calculada pela função de hash) já estiver ocupada,
+        procuramos sistematicamente por outro espaço vago dentro da mesma tabela. Esse processo de busca por um novo
+        local é chamado de sondagem (probing). Para este trabalho, utilizamos a sondagem linear, que consiste em
+        verificar a próxima posição sequencial (`índice + 1`, `índice + 2`, ...) até que um espaço livre seja
+        encontrado.
+      </p>
+      <h4 class="border-bottom pb-2 mb-4">2.2. A Operação de Inserção (put) e o Impacto das Colisões</h4>
+      <p>O foco do nosso estudo está na operação de inserção (put), pois é nela que o custo das colisões se manifesta de
+        forma mais clara. O processo ocorre da seguinte forma:
+      <ol>
+        <li>Uma chave é fornecida para a função de hash, que a converte em um índice inicial.</li>
+        <li>Verificamos a posição na tabela correspondente a esse índice.</li>
+        <li>Se estiver vazia: ótimo, a chave é inserida ali. Fim da operação.</li>
+        <li>Se estiver ocupada: ocorreu uma colisão. Iniciamos a sondagem linear, verificando a
+          próxima casa da tabela
+          até encontrar um espaço livre para fazer a inserção.</li>
+      </ol>
+      É fácil ver que cada colisão adiciona passos extras à inserção. Muitas colisões em sequência criam clusters
+      (agrupamentos), tornando a busca por um local vago cada vez mais demorada e prejudicando o desempenho geral.
+      Veja o exemplo a seguir:
+      </p>
+      <img src="assets/img_1.png" class="d-block mx-auto" alt="Descrição" style="max-width: 80%; height: 50%;">
 
-        <h3 class = "space">4. Função Shift-XOR</h3>
-        <p class = "dados">
-          Trabalha em nível binário, deslocando bits e aplicando a operação XOR. Gera endereços dispersos e difíceis de
-          prever.
-        </p>
-        <p class = "dados"><strong>Exemplo:</strong> Chave binária = 10110110 → após shift e XOR → endereço = 6 (mod m).</p>
+      <h4 class="border-bottom pb-2 mb-4">2.3. Funções Hash Analisadas</h4>
+      <p><strong>Método da Divisão:</strong> A abordagem mais simples e intuitiva. O índice é simplesmente o resto da
+        divisão da chave
+        pelo tamanho da tabela (`índice = chave % tamanho_tabela`). Sua principal fraqueza é ser muito sensível a
+        padrões nos dados de entrada, especialmente se o tamanho da tabela for mal escolhido.
+        <br>
+        <strong>Método da Multiplicação:</strong> Um método mais robusto. A chave é multiplicada por uma constante
+        (geralmente uma fração
+        entre 0 e 1), a parte fracionária do resultado é extraída e, então, multiplicada pelo tamanho da tabela para
+        obter o índice final. É menos dependente da qualidade do tamanho da tabela.
+        <br>
+        <strong>Método de Dobra (Folding):</strong> Esta técnica quebra a chave em vários pedaços, que são
+        então combinados
+        (geralmente
+        somados) para formar o índice final. É particularmente útil para chaves muito longas, como strings ou números de
+        CPF, pois garante que todas as partes da chave contribuam para o resultado.
+        <br>
+        <strong>Método Shift-XOR:</strong> Uma função baseada em operações bit a bit (bitwise), extremamente rápida em
+        nível de hardware.
+        Ela manipula a representação binária da chave, deslocando (shifting) seus bits e aplicando a operação "OU
+        exclusivo" (XOR) para misturá-los. O resultado é um valor de hash bem distribuído e gerado com alta performance.
+        <br>
+        <strong>Teorema Chinês do Resto (TCR):</strong> A função mais sofisticada do nosso estudo. Inspirada em um
+        teorema da teoria dos
+        números, essa abordagem personalizada utiliza um conjunto de números primos entre si para calcular o hash. A
+        ideia é que, ao combinar os restos da divisão da chave por cada um desses primos, obtemos um resultado final com
+        excelentes propriedades de distribuição, tornando as colisões menos prováveis.
+      </p>
+    </section>
+    <section id="metodologia">
+      <h2 class="border-bottom pb-2 mb-4">Metodologia Geral</h2>
+      <p>Para garantir que a nossa análise fosse justa, sistemática e reproduzível, adotamos uma metodologia
+        automatizada que abrange desde a criação dos dados de teste até a visualização dos resultados. Todo o processo
+        foi orquestrado para ser executado com um único comando, assegurando a consistência entre diferentes execuções.
+        A nossa abordagem foi dividida em quatro etapas principais: definição do ambiente, geração das cargas de dados,
+        execução dos benchmarks e, por fim, a coleta e análise das métricas de desempenho.
+      </p>
+      <h4 class="border-bottom pb-2 mb-4">3.1. Ambiente de Testes</h4>
+      <p>Todos os testes foram conduzidos em um ambiente de desenvolvimento padrão, utilizando as seguintes tecnologias:
+      <ul>
+        <li>Linguagens: Java (JDK 17) para a implementação da tabela hash e dos benchmarks; e Python 3 para a geração de
+          dados e gráficos.</li>
+        <li>Bibliotecas Python: `pandas` para manipulação de dados e `matplotlib` para a criação dos gráficos.</li>
+        <li>Automação: Gradle foi utilizado para automatizar todo o fluxo de compilação, teste e geração de resultados,
+          garantindo a integridade do processo.</li>
+      </ul>
+      </p>
+      <h4 class="border-bottom pb-2 mb-4">3.2. Geração das Cargas de Dados</h4>
+      <p>Criamos um conjunto diversificado de chaves de entrada, com diferentes tamanhos e padrões, para simular
+        cenários variados do mundo real. Utilizamos três fatores de carga para uma tabela de 10.007 posições:</p>
+      <ul>
+        <li>30% de Carga: 3.000 chaves.</li>
+        <li>50% de Carga: 5.000 chaves.</li>
+        <li>80% de Carga: 8.000 chaves.</li>
+      </ul>
+      <p>Para cada fator de carga, geramos três padrões distintos de chaves inteiras:</p>
+      <ul>
+        <li>Chaves Sequenciais: Números em sequência (ex: 1, 2, 3, ...).</li>
+        <li>Chaves Aleatórias (Únicos): Números distribuídos aleatoriamente.</li>
+        <li>Chaves de Números Primos: Uma sequência de números primos.</li>
+      </ul>
+      <h4 class="border-bottom pb-2 mb-4">3.3. Execução do Benchmark e Coleta de Dados</h4>
+      <p>O processo de teste foi totalmente automatizado pela tarefa `automateAll` do Gradle, que executa a seguinte
+        sequência de passos:</p>
+      <ol>
+        <li>Geração de Dados: O script em Python `scripts_data.py` é executado para gerar os arquivos de carga.</li>
+        <li>Execução em Java: O programa `CollisionCounter` lê cada arquivo de carga.</li>
+        <li>Teste das Funções: Para cada carga, o programa insere todas as chaves, repetindo o processo para cada uma
+          das cinco funções de hash.</li>
+        <li>Registro dos Resultados: As métricas de desempenho são salvas em um arquivo de saída (`output.txt`).</li>
+        <li>Geração dos Gráficos: Um script em Python lê o arquivo de saída e gera os histogramas comparativos.</li>
+      </ol>
+      <h4 class="border-bottom pb-2 mb-4">3.4. Métricas de Desempenho Analisadas</h4>
+      <p>Para avaliar a eficácia de cada função de hash, focamos em duas métricas cruciais:</p>
+      <ul>
+        <li>Número de Colisões: Contamos quantas vezes a função de hash gerou um índice que já estava ocupado por outra
+          chave.</li>
+        <li>Variância: mede a uniformidade da distribuição das chaves. Uma baixa variância indica um bom espalhamento,
+          enquanto uma alta variância aponta a formação de clusters.</li>
+      </ul>
+    </section>
+    <section id="implementacao">
+      <h2 class="border-bottom pb-2 mb-4">Implementação</h2>
+      <p>A seguir, vamos apresentar o código por trás do nosso estudo. A implementação foi dividida em duas partes
+        principais: a estrutura da `HashTable`, que serviu como base para todos os testes, e as cinco funções de hash,
+        que foram desenvolvidas como estratégias independentes e intercambiáveis. Esse design modular foi uma decisão de
+        projeto fundamental para garantir que pudéssemos testar e comparar cada função de forma isolada e justa.</p>
+      <h4 class="border-bottom pb-2 mb-4">4.1.1. Atributos Principais</h4>
+      <p>A classe opera com base em alguns atributos essenciais:</p>
+      <ul>
+        <li><code class="refs">private Pair[] table;</code>: Vetor principal com tamanho primo de 10007.</li>
+        <li><code class="refs">private Pair[] frequencia;</code>: Vetor auxiliar para registrar a frequência de cada
+          índice, usado para o
+          cálculo da Variância.</li>
+        <li><code class="refs">private HashFunction hashFunction;</code>: Objeto que representa a função de hash a ser
+          utilizada (padrão de
+          projeto Strategy).</li>
+        <li><code class="refs">private int collisions;</code>: Contador para registrar o número total de colisões.</li>
+      </ul>
+      <h4 class="border-bottom pb-2 mb-4">4.1.2. O Método de Inserção put</h4>
+      <p>O método <code class="refs">put</code> é o componente central da classe, responsável pela inserção de novos
+        pares de chave-valor e pelo
+        tratamento de colisões. Sua lógica segue os seguintes passos:</p>
+      <ol start="6">
+        <li>Cálculo do Hash Inicial: A função de hash fornecida é utilizada para calcular o índice inicial da chave.
+        </li>
+        <li>Sondagem Linear: Um laço é iniciado para procurar uma posição disponível na tabela, avançando
+          sequencialmente a partir do índice de hash inicial.</li>
+        <li>Análise da Posição: O estado da posição é verificado para inserir (se livre), contar colisão (se ocupado por
+          outra chave) ou atualizar (se a mesma chave).</li>
+      </ol>
+      <h3 class="border-bottom pb-2 mb-4">4.2. As Funções de Hash Implementadas</h3>
+      <p>Cada função de hash foi implementada como uma classe individual que implementa a interface <code
+          class="refs">`HashFunction`</code>. Essa
+        abordagem permite que cada algoritmo seja tratado como uma estratégia intercambiável</p>
+      <h4 class="border-bottom pb-2 mb-4">4.2.1. Método da Divisão</h4>
+      <p>Calcula o índice aplicando a operação de módulo entre a chave e o tamanho da tabela.</p>
+      <pre><code class="language-java">
+        @Override
+        public int hash(int key, int tableSize) {
+            return key % tableSize;
+        }
+      </code></pre>
+      <h4 class="border-bottom pb-2 mb-4">4.2.2. Método da Multiplicação</h4>
+      <p>Utiliza uma constante baseada na proporção áurea para espalhar as chaves. O cálculo envolve multiplicar a chave
+        pela constante, extrair a parte fracionária e mapear o valor para um índice.</p>
+      <pre><code class="language-java">
+        // Constante A vem do inverso da razão aurea
+        private static final double A  = 0.6180339887;
+        @Override
+        public int hash(int key, int tableSize) {
+		      double frac = (key * A) % 1;
+		      return (int) (tableSize * frac);
+        }
+      </code></pre>
+      <h4 class="border-bottom pb-2 mb-4">4..2.3. Método de Dobra (Folding)</h4>
+      <p>Converte a chave em uma string, segmenta em partes menores, e a soma dessas partes (seguida do módulo) resulta
+        no índice final.</p>
+      <pre><code class="language-java">
+        // Constante SIZE_PARTS define o tamanho dos intervalo em que a chave será dividida
+        private static final int SIZE_PARTS = 3;
+        @Override
+        public int hash(int key, int tableSize) {
+            int sum = 0;
+            String keyStr = String.valueOf(key);
 
-        <h3 class = "space">5. Função TCR (Teorema Chinês do Resto)</h3>
-        <p class = "dados">
-          Utiliza restos de divisões por números primos distintos para calcular o endereço.
-        </p>
-        <p class = "dados"><strong>Exemplo:</strong> Chave = 35, m1 = 3, m2 = 5 → restos = (2, 0) → combinação via TCR → endereço final
-          = 2.</p>
-      </section>
+            for(int i = keyStr.length(); i > 0; i -= SIZE_PARTS) {
+                int start = Integer.max(i - SIZE_PARTS, 0);
+                sum += Integer.parseInt(keyStr.substring(start, i));
+            }
+            
+            return sum % tableSize;
+        }
+      </code></pre>
+      <h4 class="border-bottom pb-2 mb-4">4.2.4. Método Shift-XOR</h4>
+      <p>Opera na representação binária da chave, utilizando operações bitwise (deslocamentos e XOR) para misturar os
+        bits da chave e gerar o hash.</p>
+      <pre><code class="language-java">
+        @Override
+        public int hash(int key, int tableSize) {
+            key ^= (key << 13);
+            key ^= (key >>> 17);
+            key ^= (key << 5);
+            return Math.abs(key) % tableSize;
+        }
+      </code></pre>
+      <h4 class="border-bottom pb-2 mb-4">4.2.5. Teorema Chinês do Resto (TCR)</h4>
+      <p>Implementação inspirada no teorema, que utiliza um conjunto de números primos. A chave é processada
+        modularmente com cada primo, e os resultados são combinados para formar o hash.</p>
+      <pre><code class="language-java">
+        // =========================
+        // Constantes do método TCR
+        // =========================
+        // Módulos fixos utilizados pelo TCR (todos coprimos entre si). */
+        private static final int[] MODULOS_FIXOS = {15, 26, 77}; 
+        // Produto total dos módulos fixos (15 * 26 * 77 = 30030). */
+        private static final int M = 15 * 26 * 77; 
+        // Produtos parciais (M / mi) para cada módulo. */
+        private static final int[] MI = {2002, 1155, 390};
+        // Inversos modulares correspondentes aos produtos parciais. */
+        private static final int[] YI = {13, 19, 31};
+        @Override
+        public int hash(int key, int tableSize) {    
+            int result = 0;
+            for (int i = 0; i < MODULOS_FIXOS.length; i++) {
+                int resto = key % MODULOS_FIXOS[i];
+                result += resto * MI[i] * YI[i];
+            }
+            result %= M;
+            return result % tableSize;
+        }
+      </code></pre>
+    </section>
+    <section id="resultados">
+      <h2 class="border-bottom pb-2 mb-4">Resultados e Benchmarks</h2>
+      <p>Os resultados a seguir foram obtidos através da pipeline de testes após a correção e refinamento das
+        implementações das funções hash. Eles são apresentados em formato de histogramas, que comparam visualmente o
+        desempenho das cinco funções hash para cada padrão de chave e fator de carga.</p>
+      <h4 class="border-bottom pb-2 mb-4">5.1. Análise de Colisões</h4>
+      <img src="assets/hist_colisoes_30%-1.png" class="d-block mx-auto" alt="Descrição"
+        style="max-width: 80%; height: 50%;">
+      <h6>Fator de Carga: 30% (3.000 chaves)</h6>
+      <p>No cenário de baixa densidade, observa-se uma clara separação de desempenho. As funções <code
+          class="refs">DIVISION</code>,
+        <code class="refs">MULTIPLICATION</code>, <code class="refs">TCR</code> e <code class="refs">SHIFT_XOR</code>
+        formam um grupo de alta performance, mantendo um número de colisões
+        consistentemente baixo. Em nítido contraste, a função <code class="refs">FOLDING</code> apresenta um desempenho
+        muito inferior, com um
+        número de colisões drasticamente mais alto.
+      </p>
+      <img src="assets/hist_colisoes_50%-1.png" class="d-block mx-auto" alt="Descrição"
+        style="max-width: 80%; height: 50%;">
+      <h6>Fator de Carga: 50% (5.000 chaves)</h6>
+      <p>Com o aumento da carga, a tendência se mantém. O grupo de funções de bom desempenho vê um aumento esperado no
+        número de colisões, continuando a se comportar de forma estável. A função <code class="refs">FOLDING</code>, por
+        outro lado, demonstra
+        uma degradação severa, com o número de colisões ultrapassando 4.000.</p>
+      <img src="assets/hist_colisoes_80%-1.png" class="d-block mx-auto" alt="Descrição"
+        style="max-width: 80%; height: 50%;">
+      <h6>Fator de Carga: 80% (8.000 chaves)</h6>
+      <p>Neste cenário de estresse máximo, <code class="refs">FOLDING</code> atinge um colapso de performance. Dentro do
+        grupo de funções de bom
+        desempenho, a função <code class="refs">MULTIPLICATION</code> exibe uma performance notavelmente superior para
+        as chaves sequenciais em
+        comparação com as outras.</p>
+      <h4>5.2. Análise da Variância</h4>
+      <img src="assets/hist_variancia_30%-1.png" class="d-block mx-auto" alt="Descrição"
+        style="max-width: 80%; height: 50%;">
+      <h6>Fator de Carga: 30% (3.000 chaves)</h6>
+      <p>O gráfico de variância explica os resultados de colisões. As quatro funções de bom desempenho apresentam uma
+        variância próxima de zero, indicando uma distribuição quase perfeita. Em contrapartida, <code
+          class="refs">FOLDING</code> exibe uma
+        variância significativamente mais alta, confirmando sua tendência a agrupar as chaves.
+      </p>
+      <img src="assets/hist_variancia_50%-1.png" class="d-block mx-auto" alt="Descrição"
+        style="max-width: 80%; height: 50%;">
+      <h6>Fator de Carga: 50% (5.000 chaves)</h6>
+      <p>A tendência se confirma. Enquanto o grupo principal mantém a variância em níveis muito baixos, a variância da
+        <code class="refs">FOLDING</code> continua a crescer, demonstrando que sua má distribuição é uma característica
+        fundamental da sua
+        implementação.
+      </p>
+      <img src="assets/hist_variancia_80%-1.png" class="d-block mx-auto" alt="Descrição"
+        style="max-width: 80%; height: 50%;">
+      <h6>Fator de Carga: 80% (8.000 chaves)</h6>
+      <p>Com 80% de carga, os resultados são consistentes. As quatro funções de elite mantêm uma variância muito baixa e
+        estável. A variância da <code class="refs">FOLDING</code> atinge seu pico, um indicativo de clustering severo e
+        a razão direta para seu
+        péssimo desempenho em colisões.</p>
+    </section>
+    <section id="analise">
+      <h2 class="border-bottom pb-2 mb-4">Análise Comparativa das Funções Hash</h2>
+      <p>A análise dos novos resultados permite traçar um perfil definitivo sobre a eficácia, robustez e as fraquezas de
+        cada uma das cinco funções de hash estudadas.</p>
+      <h4 class="border-bottom pb-2 mb-4"><code class="refs">DIVISION, TCR e SHIFT_XOR:</code></h4>
+      <p>Essas três funções formaram um grupo de desempenho consistentemente alto e muito similar. Elas se mostraram
+        robustas para todos os tipos de chaves e fatores de carga, provando serem escolhas seguras e confiáveis.</p>
+      <h4 class="border-bottom pb-2 mb-4"><code class="refs">MULTIPLICATION:</code></h4>
+      <p>Esta função também pertence ao grupo de elite, mas com um diferencial notável: sua performance excepcional com
+        chaves sequenciais em alta carga. Isso sugere que sua implementação é particularmente eficaz em quebrar padrões
+        aritméticos simples.</p>
+      <h4 class="border-bottom pb-2 mb-4"><code class="refs">FOLDING:</code></h4>
+      <p>Os resultados confirmam que esta implementação é fundamentalmente inadequada para o universo de chaves inteiras
+        testado. Tanto o número de colisões quanto a variância foram ordens de magnitude piores que as outras funções em
+        todos os cenários.</p>
+      <h4 class="border-bottom pb-2 mb-4">Tabela Comparativa Resumida</h4>
 
-      <section id="resultados" class="card">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
 
-        <h2>Resultados</h2>
-        <p class = "space">
-          Nesta seção são apresentados os gráficos gerados a partir dos experimentos realizados.
-          Os resultados estão organizados de acordo com o tipo de carga utilizada e o tipo de métrica analisada.
-        </p>
+          <thead class="table-dark">
+            <tr>
+              <th>Função</th>
+              <th>Qualidade da Distribuição (Observada)</th>
+              <th>Consistência entre Datasets</th>
+              <th>Recomendação de Uso (com base nos testes)</th>
+            </tr>
+          </thead>
 
-        <!-- Gráficos por Tipo de Carga -->
-        <h3 class = "space">1. Gráficos por Tipo de Carga</h3>
-        <div class="grafico-container">
-          <figure>
-            <img src="graficos/colisoes/colisoes_30_porcent.jpg" alt="Colisões Com 30 % de Carga" class="grafico-img">
-            <figcaption>Número de colisões com 30% de fator de carga</figcaption>
-          </figure>
+          <tbody>
+            <tr>
+              <td><strong>Divisão</strong></td>
+              <td>Alta</td>
+              <td>Alta</td>
+              <td>Escolha sólida e simples, bom desempenho geral.</td>
+            </tr>
+            <tr>
+              <td><strong>Multiplicação</strong></td>
+              <td>Alta</td>
+              <td>Muito Alta</td>
+              <td>Excelente escolha, especialmente robusta contra dados sequenciais.</td>
+            </tr>
+            <tr>
+              <td><strong>Folding</strong></td>
+              <td>Muito Baixa</td>
+              <td>(Irrelevante)</td>
+              <td>Não recomendada para este tipo de dado.</td>
+            </tr>
+            <tr>
+              <td><strong>Shift-XOR</strong></td>
+              <td>Alta</td>
+              <td>Alta</td>
+              <td>Escolha de primeira linha, desempenho similar ao da Divisão e TCR.</td>
+            </tr>
+            <tr>
+              <td><strong>TCR</strong></td>
+              <td>Muito Alta</td>
+              <td>Muito Alta</td>
+              <td>Escolha ideal para máxima robustez na distribuição.</td>
+            </tr>
+          </tbody>
 
-          <figure>
-            <img src="graficos/colisoes/colisoes_50_porcent.jpg" alt="Colisões Com 50 % de Carga" class="grafico-img">
-            <figcaption>Número de colisões com 50% de fator de carga</figcaption>
-          </figure>
-
-          <figure>
-            <img src="graficos/colisoes/colisoes_80_porcent.jpg" alt="Colisões com 80 % de Carga" class="grafico-img">
-            <figcaption>Número de colisões com 80% de fator de carga</figcaption>
-          </figure>
-        </div>
-
-        <!-- Gráficos por Tipo de Métrica -->
-        <h3 class = "space">2. Gráficos por Tipo de Métrica</h3>
-        <div class="grafico-container">
-          <figure>
-            <img src="graficos/variancia/variancia_30_porcent.jpg" alt="Variância com chaves primos"
-              class="grafico-img">
-            <figcaption>Variância no número de colisões - 30% fator de carga</figcaption>
-          </figure>
-
-          <figure>
-            <img src="graficos/variancia/variancia_50_porcent.jpg" alt="Variância com chaves sequenciais"
-              class="grafico-img">
-            <figcaption>Variância no número de colisões - 50% de fator de carga</figcaption>
-          </figure>
-
-          <figure>
-            <img src="graficos/variancia/variancia_80_porcent.jpg" alt="Variância com chaves aleatórias"
-              class="grafico-img">
-            <figcaption>Variância no número de colisões - 80% de fator de carga</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <!-- Análise -->
-      <section id="analise" class="card">
-        <h2>Análise</h2>
-        <p class = "space">
-          A análise foi baseada nas métricas obtidas durante a inserção dos elementos. O foco principal foi medir o
-          número de colisões em diferentes condições de carga.
-        </p>
-
-        <h3 class = "space">Funcionamento da função <code>insert</code></h3>
-        <p class = "dados">
-          A função <code>insert</code> insere um elemento calculando o endereço pela função hash.
-          Se a posição estiver livre, o elemento é armazenado. Caso contrário, aplica-se sondagem linear até encontrar
-          espaço.
-        </p>
-
-        <h3 class = "space">Comportamento dos dados</h3>
-        <ul class = "dados">
-          <li><strong>Primos:</strong> Entradas não consecutivas, menor probabilidade de padrões repetitivos.</li>
-          <li><strong>Sequenciais:</strong> Tendem a gerar agrupamentos, dependendo da função hash.</li>
-          <li><strong>Aleatórios sem repetição:</strong> Simulam cenários reais, permitindo avaliar estabilidade das
-            funções.</li>
-        </ul>
-      </section>
-
-      <!-- Conclusão -->
-      <section id="conclusao" class="card">
-        <h2>Conclusão</h2>
-        <p class = "space">
-          Este estudo permitiu avaliar diferentes funções hash em tabelas por endereçamento aberto, considerando cargas
-          variadas e métricas como colisões.
-        </p>
-        <p class = "space">
-          A análise mostrou que a escolha da função e a natureza dos dados influenciam diretamente na eficiência.
-          Funções simples como divisão e multiplicação são rápidas, mas podem ter limitações. Já funções como shift-XOR
-          e TCR apresentaram maior estabilidade.
-        </p>
-        <p class = "space">
-          Em resumo, a escolha da função hash adequada é essencial para reduzir colisões e garantir melhor desempenho em
-          sistemas reais.
-        </p>
-      </section>
-
-      <!-- Créditos e Bibliografia -->
-      <section id="bibliografia" class="card">
-        <h2>Créditos e Bibliografia</h2>
-
-        <h3 class = "space">Participantes</h3>
-        <ul class = "dados">
-          <li><strong>Pedro Henrique Pereira da Silva</strong></li>
-          <li><strong>Bruno Rafael Medeiros Silvestre</strong></li>
-          <li><strong>Ryan Victor Lucena</strong></li>
-          <li><strong>Érik Alves Almeida</strong></li>
-          <li><strong>Erick Henrique Amorim da Silva</strong></li>
-        </ul>
-
-        <h3 class = "space">Referências Bibliográficas</h3>
-        <ul class = "dados">
-          <li>CORMEN, T. H.; LEISERSON, C. E.; RIVEST, R. L.; STEIN, C. <em>Introduction to Algorithms</em>. 3ª ed. MIT
-            Press, 2009.</li>
-          <li>KNUDSON, K. <em>Data Structures and Algorithms in Java</em>. Pearson, 2018.</li>
-          <li>Sedgewick, R.; Wayne, K. <em>Algorithms</em>. 4ª ed. Addison-Wesley, 2011.</li>
-          <li>Site do professor <strong>João Arthur</strong>:
-            <a href="https://joaoarthurbm.github.io/eda/" target="_blank">https://joaoarthurbm.github.io/eda/</a>.
-            Acesso em: 14 de setembro de 2025.
-          </li>
-        </ul>
-
-        <h3 class = "space">Agradecimentos</h3>
-        <p class = "dados">
-          Agradecemos a todos que colaboraram direta ou indiretamente no desenvolvimento deste projeto,
-          em especial à equipe de apoio técnico e acadêmico que forneceu orientação e feedback valioso.
-        </p>
-      </section>
-
-    </main>
+        </table>
+      </div>
+    </section>
+    <section id="aplicacao">
+      <h2 class="border-bottom pb-2 mb-4">Aplicações no Mundo Real</h2>
+      <p>A eficiência das tabelas hash, quando implementadas com uma função de hash de qualidade, as torna
+        indispensáveis
+        no mundo da computação. A capacidade de encontrar uma informação em tempo constante (O(1)) é um requisito
+        essencial para sistemas de alta performance.
+      </p>
+      <h4 class="border-bottom pb-2 mb-4">7.1. Indexação em Bancos de Dados</h4>
+      <p><strong>O Desafio: </strong>Em um banco de dados com milhões de registros, como encontrar um usuário específico
+        pelo seu ID ou e-mail de forma instantânea? Uma busca linear seria proibitivamente lenta.
+        <br><br><strong>A Solução com Tabela Hash: </strong>Os bancos de dados criam índices, que são essencialmente
+        tabelas hash. A chave é o valor buscado (ex: o CPF de um usuário) e o valor é um ponteiro para a localização
+        exata do registro completo no disco.
+        <br><br><strong>Impacto da Função Hash: </strong>
+        Uma boa função de hash permite que o banco de dados encontre o ponteiro em tempo O(1), acessando o dado
+        diretamente. Uma função ruim, como a <code class="refs">Folding</code> que analisamos, criaria muitas colisões,
+        tornando a consulta
+        lenta e impactando a experiência do usuário.
+      </p>
+      <h4 class="border-bottom pb-2 mb-4">7.2. Sistemas de Cache</h4>
+      <p><strong>O Desafio: </strong>Ao navegar na internet, baixar os mesmos arquivos (imagens, scripts) repetidamente
+        é um desperdício de tempo e banda. Como o navegador pode verificar rapidamente se já tem uma cópia local de um
+        arquivo?
+        <br><br><strong>A Solução com Tabela Hash: </strong>Navegadores e servidores usam caches, que são tabelas hash.
+        A chave é a URL do recurso e o valor é o próprio arquivo armazenado localmente.
+        <br><br><strong>Impacto da Função Hash: </strong>
+        Funções de alta performance como a <code class="refs">Shift-XOR</code> são ideais aqui, pois a verificação no
+        cache precisa ser quase
+        instantânea para ser mais rápida que uma nova requisição à rede.
+      </p>
+      <h4 class="border-bottom pb-2 mb-4">7.3. Tabelas de Símbolos em Compiladores</h4>
+      <p><strong>O Desafio: </strong>Um compilador precisa memorizar cada variável e função declarada pelo programador e
+        acessar essa informação rapidamente toda vez que ela aparece no código.
+        <br><br><strong>A Solução com Tabela Hash: </strong>O compilador usa uma Tabela de Símbolos, que é uma tabela
+        hash. A chave é o nome da variável (ex: "minhaVariavel") e o valor contém seus metadados (tipo, escopo, etc.).
+        <br><br><strong>Impacto da Função Hash: </strong>
+        A eficiência da compilação depende de milhares de buscas nesta tabela. Uma função robusta como a <code
+          class="refs">Multiplicação</code>
+        ou <code class="refs">TCR</code> garante que essas buscas sejam em tempo constante.
+      </p>
+    </section>
+    <section id="conclusao">
+      <h2 class="border-bottom pb-2 mb-4">Conclusão</h2>
+      <p>Este trabalho se propôs a realizar uma análise comparativa e quantitativa do desempenho de cinco funções de
+        hash distintas no contexto de uma tabela hash com endereçamento aberto e sondagem linear. Utilizando o número de
+        colisões e a variância da distribuição como métricas, submetemos as funções a diferentes tipos e volumes de
+        dados para determinar quais se mostram mais adequadas para aplicações práticas.<br><br>
+        Os resultados dos benchmarks revelaram uma clara distinção de desempenho. As funções de Multiplicação, TCR,
+        Divisão e a versão corrigida da Shift-XOR formaram um grupo de elite, demonstrando alta eficácia. Em
+        contrapartida, a função de Dobra (Folding), na sua implementação testada, provou ser fundamentalmente inadequada
+        para o universo de chaves inteiras, resultando em um desempenho de ordens de magnitude inferior.<br><br>
+        Com base na análise dos dados coletados, podemos definir que a melhor escolha geral recai sobre o grupo formado
+        por Multiplicação, TCR e Shift-XOR, enquanto a pior escolha, de forma inequívoca, foi a implementação da função
+        de Dobra (Folding).<br><br>
+        Dessa forma, o estudo atingiu seu objetivo ao demonstrar, através de medições concretas, o impacto direto que o
+        algoritmo de hash exerce sobre a eficiência de uma tabela. A análise evidenciou que uma escolha bem fundamentada
+        da função de hash é um fator crítico para garantir o desempenho e a confiabilidade esperados desta importante
+        estrutura de dados.
+      </p>
+    </section>
+    <section id="creditos">
+      <h2 class="border-bottom pb-2 mb-4">Autores e Referências</h2>
+      <h4 class="border-bottom pb-2 mb-4">9.1. Autores</h4>
+      <ul>
+        <li>Bruno Rafael Medeiros Silvestre</li>
+        <li>Erick Henrique Amorim da Silva</li>
+        <li>Érik Alves Almeida</li>
+        <li>Pedro Henrique Pereira da Silva</li>
+        <li>Ryan Victor Lucena</li>
+      </ul>
+      <h4 class="border-bottom pb-2 mb-4">9.2. Referências Bibliográficas</h4>
+      <ol>
+        <li><strong>João Arthur Brunet. </strong><i>Estrutura de Dados e Algoritmos - Material de Aula. </i></li>
+        Disponível em:
+        <https: //joaoarthurbm.github.io/eda />.
+        <li><strong>KNUTH, Donald E. </strong><i>The Art of Computer Programming, Volume 3: Sorting and Searching.
+          </i>2ª ed. Addison-Wesley Professional, 1998.
+        </li>
+        <li><strong>CORMEN, Thomas H. et al. </strong><i>Algoritmos: Teoria e Prática. </i></li>3ª ed. Rio de Janeiro:
+        Elsevier, 2012.
+        <li><strong>SEDGEWICK, Robert; WAYNE, Kevin. </strong><i>Algorithms. </i></li>4ª ed. Addison-Wesley
+        Professional, 2011.
+      </ol>
+    </section>
   </div>
-
-  <script src="script.js"></script>
 </body>
 
 </html>
