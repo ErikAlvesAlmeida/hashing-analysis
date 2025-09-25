@@ -20,10 +20,12 @@ Antes de começar, garanta que você tenha as seguintes ferramentas instaladas e
 Você pode verificar as instalações com os seguintes comandos no seu terminal:
 
 ```bash
+# comandos de verificação
 git --version
 java -version
 gradle -version
-python3 --version
+python --version
+# ou python3 --version
 ```
 
 ## Instalação e Configuração
@@ -43,6 +45,21 @@ Na pasta raiz do projeto, execute:
 ```bash
 gradle automateAll
 ```
+
+### Nota para os usuários de Linux (Debian/Ubuntu):
+Algumas distribuições Linux separam o módulo venv da instalação principal do Python. Se o comando gradle automateAll falhar na tarefa :createVenv, execute o seguinte comando para instalar o módulo necessário e tente novamente:
+
+```bash
+sudo apt install python3-venv
+```
+
+E, caso não funcione novamente, significa que a última tentativa de rodar o ```gradle automateAll``` deixou alguns vestígios da pasta ```.venv``` para trás, execute este comando apague a pasta remanescente:
+
+```bash
+rm -rf .venv
+```
+
+Agora pode rodar novamente!
 
 O processo pode levar alguns minutos para ser concluído.
 
