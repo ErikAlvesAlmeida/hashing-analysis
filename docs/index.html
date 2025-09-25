@@ -198,6 +198,77 @@
         <li>Chaves Aleatórias (Únicos): Números distribuídos aleatoriamente.</li>
         <li>Chaves de Números Primos: Uma sequência de números primos.</li>
       </ul>
+      <h4 class="border-bottom pb-2 mb-4">3.2.1. Justificativa das Cargas de Dados</h4>
+      <p>A seleção dos conjuntos de dados (sequencial, aleatório e primos) foi uma decisão deliberada de projeto para
+        submeter as funções de hash a um espectro variado de cenários, do ideal ao "pior caso". O objetivo era criar um
+        perfil de desempenho completo, avaliando não apenas a performance média, mas a robustez e a resistência de cada
+        algoritmo contra padrões específicos.</p>
+      <ol>
+        <li>
+          <h6>Por que chaves sequenciais?</h6>
+          <ul>
+            <li><strong>Objetivo: </strong>Simular o pior cenário para funções de hash aritmeticamente simples.</li>
+            <li><strong>Explicação: </strong>Dados sequenciais (como <code class="refs">1000, 1001, 1002, ...</code>)
+              são extremamente comuns no
+              mundo real, principalmente em chaves primárias de bancos de dados (auto-incremento). Esse tipo de carga é
+              especialmente prejudicial para funções de hash mal projetadas. Uma boa função de hash deve ter um efeito
+              avalanche, onde uma
+              pequena mudança na entrada (de <code class="refs">1001</code> <code class="refs">para 1002</code>) gera
+              uma grande mudança na saída (o hash). O método da
+              Divisão, por exemplo, apresenta limitações nesse aspecto, pois <code class="refs">1001 % 10007</code> e
+              <code class="refs">1002 % 10007</code> produzem hashes
+              sequenciais. Usamos esta carga para medir explicitamente a capacidade de uma função de quebrar padrões de
+              entrada previsíveis e evitar a formação de clusters primários.
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h6>Por que chaves aleatórias (únicas)?</h6>
+          <ul>
+            <li><strong>Objetivo: </strong>Estabelecer a linha de base de desempenho em um cenário ideal.</li>
+            <li><strong>Explicação: </strong>Um conjunto de chaves aleatórias, sem padrão discernível, representa o
+              "caso médio" ou o cenário ideal para uma tabela hash. Nesse ambiente, a performance da função depende
+              unicamente de sua capacidade intrínseca de gerar uma distribuição uniforme. Este teste serve como um
+              controle experimental: se uma função de hash se sai mal com dados aleatórios, ela é fundamentalmente
+              falha. Usamos esta carga para medir o <strong>desempenho bruto e a qualidade de distribuição</strong> de
+              cada função em
+              condições perfeitas.
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h6>Por que chaves de números primos?</h6>
+          <ul>
+            <li><strong>Objetivo: </strong>Testar a robustez contra padrões matemáticos não-triviais.</li>
+            <li><strong>Explicação: </strong>Números primos não são sequenciais nem verdadeiramente aleatórios; eles
+              seguem padrões matemáticos complexos e, crucialmente, carecem de pequenos divisores. Esta carga é um teste
+              de estresse mais sutil. Para o método da <strong>Divisão</strong>, que depende de um tamanho de tabela
+              primo para se
+              proteger contra chaves com fatores comuns (ex: muitas chaves pares), testá-lo com chaves que <i>já são
+                primas</i>
+              verifica sua resiliência de uma forma diferente. Para as outras funções, este conjunto de dados serve para
+              avaliar se o algoritmo é sensível a alguma propriedade numérica específica que não seja óbvia.
+              Essencialmente, é um teste para garantir que a função se comporte bem mesmo quando os dados de entrada não
+              são perfeitamente distribuídos, mas também não são trivialmente padronizados.
+            </li>
+          </ul>
+        </li>
+      </ol>
+      <h5>Síntese da Metodologia de Teste:</h5>
+      <p>A combinação destes três conjuntos de dados distintos permite uma avaliação completa e multifacetada de cada
+        função. Por meio desta abordagem, a análise consegue determinar:</p>
+      <ul>
+        <li>A <strong>resistência</strong> do algoritmo a entradas com padrões aritméticos previsíveis (através do teste
+          sequencial).
+        </li>
+        <li>A <strong>performance</strong> base de cada função em um cenário de caso médio (através do teste aleatório).
+        </li>
+        <li>A <strong>robustez</strong> das funções contra um conjunto de dados com propriedades matemáticas específicas
+          (através do
+          teste com números primos).</li>
+      </ul>
+      <p>Essa metodologia de testes fornece uma base empírica sólida para comparar as funções não apenas em seu
+        desempenho médio, mas também em sua consistência e confiabilidade em diferentes cenários.</p>
       <h4 class="border-bottom pb-2 mb-4">3.3. Execução do Benchmark e Coleta de Dados</h4>
       <p>O processo de teste foi totalmente automatizado pela tarefa `automateAll` do Gradle, que executa a seguinte
         sequência de passos:</p>
@@ -275,7 +346,7 @@
 		      return (int) (tableSize * frac);
         }
       </code></pre>
-      <h4 class="border-bottom pb-2 mb-4">4..2.3. Método de Dobra (Folding)</h4>
+      <h4 class="border-bottom pb-2 mb-4">4.2.3. Método de Dobra (Folding)</h4>
       <p>Converte a chave em uma string, segmenta em partes menores, e a soma dessas partes (seguida do módulo) resulta
         no índice final.</p>
       <pre><code class="language-java">
@@ -334,7 +405,7 @@
       </code></pre>
     </section>
     <section id="resultados">
-      <h2 class="border-bottom pb-2 mb-4">Resultados e Benchmarks</h2>
+      <h2 class="border-bottom pb-2 mb-4">5. Resultados e Benchmarks</h2>
       <p>Os resultados a seguir foram obtidos através da pipeline de testes após a correção e refinamento das
         implementações das funções hash. Eles são apresentados em formato de histogramas, que comparam visualmente o
         desempenho das cinco funções hash para cada padrão de chave e fator de carga.</p>
@@ -362,7 +433,8 @@
       <h6>Fator de Carga: 80% (8.000 chaves)</h6>
       <p>Neste cenário de estresse máximo, <code class="refs">FOLDING</code> atinge um colapso de performance. Dentro do
         grupo de funções de bom
-        desempenho, as funções <code class="refs">DIVISION, MULTIPLICATION e TCR</code> exibem uma performance notavelmente superior para
+        desempenho, as funções <code class="refs">DIVISION, MULTIPLICATION e TCR</code> exibem uma performance
+        notavelmente superior para
         as chaves sequenciais em
         comparação com as outras.</p>
       <h4>5.2. Análise da Variância</h4>
@@ -385,8 +457,9 @@
       <img src="assets/hist_variancia_80.png" class="d-block mx-auto" alt="Descrição"
         style="max-width: 80%; height: 50%;">
       <h6>Fator de Carga: 80% (8.000 chaves)</h6>
-      <p>Com 80% de carga, os resultados são consistentes. As quatro funções de elite mantêm uma variância muito baixa e
-        estável. A variância da <code class="refs">FOLDING</code> atinge seu pico, um indicativo de clustering severo e
+      <p>Com 80% de carga, os resultados são consistentes. As quatro funções avaliadas com maior eficiência mantêm uma
+        variância muito baixa e estável. A variância da <code class="refs">FOLDING</code> atinge seu pico, um
+        indicativo de clustering severo e
         a razão direta para seu
         péssimo desempenho em colisões.</p>
     </section>
@@ -499,7 +572,7 @@
         colisões e a variância da distribuição como métricas, submetemos as funções a diferentes tipos e volumes de
         dados para determinar quais se mostram mais adequadas para aplicações práticas.<br><br>
         Os resultados dos benchmarks revelaram uma clara distinção de desempenho. As funções de Multiplicação, TCR,
-        Divisão e Shift-XOR formaram um grupo de elite, demonstrando alta eficácia. Em
+        Divisão e Shift-XOR apresentaram o melhor desempenho, demonstrando alta eficácia. Em
         contrapartida, a função de Dobra (Folding), na sua implementação testada, provou ser fundamentalmente inadequada
         para o universo de chaves inteiras, resultando em um desempenho de ordens de magnitude inferior.<br><br>
         Com base na análise dos dados coletados, podemos definir que a melhor escolha geral recai sobre o grupo formado
@@ -524,13 +597,16 @@
       <h4 class="border-bottom pb-2 mb-4">9.2. Referências Bibliográficas</h4>
       <ol>
         <li><strong>João Arthur Brunet.</strong> <i>Estrutura de Dados e Algoritmos - Material de Aula.</i>
-          Disponível em: &lt;<a href="https://joaoarthurbm.github.io/eda" target="_blank">https://joaoarthurbm.github.io/eda</a>&gt;.
+          Disponível em: &lt;<a href="https://joaoarthurbm.github.io/eda"
+            target="_blank">https://joaoarthurbm.github.io/eda</a>&gt;.
         </li>
         <li><strong>KNUTH, Donald E. </strong><i>The Art of Computer Programming, Volume 3: Sorting and Searching.
           </i>2ª ed. Addison-Wesley Professional, 1998.
         </li>
-        <li><strong>CORMEN, Thomas H. et al. </strong><i>Algoritmos: Teoria e Prática. </i>3ª ed. Rio de Janeiro: Elsevier, 2012.</li>
-        <li><strong>SEDGEWICK, Robert; WAYNE, Kevin. </strong><i>Algorithms. </i>4ª ed. Addison-Wesley Professional, 2011.</li>
+        <li><strong>CORMEN, Thomas H. et al. </strong><i>Algoritmos: Teoria e Prática. </i>3ª ed. Rio de Janeiro:
+          Elsevier, 2012.</li>
+        <li><strong>SEDGEWICK, Robert; WAYNE, Kevin. </strong><i>Algorithms. </i>4ª ed. Addison-Wesley Professional,
+          2011.</li>
       </ol>
     </section>
   </div>
