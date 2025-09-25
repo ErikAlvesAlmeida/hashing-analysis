@@ -27,6 +27,15 @@ gradle -version
 python --version
 # ou python3 --version
 ```
+### Nota para os usuários de Linux:
+A automação do projeto depende do módulo ```venv``` do Python. Se a execução do ```gradle automateAll``` falhar na tarefa ```:createVenv``` com um erro sobre ```ensurepip```, significa que este módulo não está instalado. Para corrigir, instale o pacote de desenvolvimento do Python para sua distribuição.
+
+Geralmente, o pacote é chamado de ```python3-venv``` ou ```python3-devel```, e pode ser instalado com o gerenciador de pacotes apropriado (```apt```, ```dnf```, ```zypper```, etc.).
+
+- Para Debian/Ubuntu: ```sudo apt install python3-venv```
+- Para Fedora/RHEL: ```sudo dnf install python3-devel```
+
+Se o erro persistir, a primeira tentativa pode ter deixado uma pasta ```.venv``` incompleta. Remova-a com o comando ```rm -rf .venv``` e execute o ```gradle automateAll``` novamente.
 
 ## Instalação e Configuração
 Siga os passos abaixo para configurar o ambiente e instalar as dependências.
@@ -45,22 +54,6 @@ Na pasta raiz do projeto, execute:
 ```bash
 gradle automateAll
 ```
-
-### Nota para os usuários de Linux (Debian/Ubuntu):
-Algumas distribuições Linux separam o módulo venv da instalação principal do Python. Se o comando gradle automateAll falhar na tarefa :createVenv, execute o seguinte comando para instalar o módulo necessário e tente novamente:
-
-```bash
-sudo apt install python3-venv
-```
-
-E, caso não funcione novamente, significa que a última tentativa de rodar o ```gradle automateAll``` deixou alguns vestígios da pasta ```.venv``` para trás, execute este comando apague a pasta remanescente:
-
-```bash
-rm -rf .venv
-```
-
-Agora pode rodar novamente!
-
 O processo pode levar alguns minutos para ser concluído.
 
 ## Estrutura do Repositório
