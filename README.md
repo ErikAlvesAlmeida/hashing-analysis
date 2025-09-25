@@ -13,7 +13,7 @@ Antes de começar, garanta que você tenha as seguintes ferramentas instaladas e
 
 - *Java Development Kit (JDK)*: Versão 17 ou superior.
 
-- *Gradle*: Para automação da compilação e execução dos testes. Versão 8 ou superior.
+- *Gradle*: Versão 8.0 ou superior.
 
 - *Python*: Versão 3.11 ou superior.
 
