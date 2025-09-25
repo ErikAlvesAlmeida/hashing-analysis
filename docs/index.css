@@ -12,11 +12,12 @@ section h2 {
   margin-bottom: 1rem;             
 }
 
-code.referencia {
+code.refs {
   background-color: #f6f8fa; 
-  border: 1px solid #d1d5da; 
+  border: 1px #d1d5da; 
   border-radius: 4px;        
   padding: 2px 4px;         
   font-family: monospace;    
   font-size: 0.95em;
+  color: #484848;
 }

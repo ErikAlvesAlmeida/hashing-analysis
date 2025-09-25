@@ -114,8 +114,18 @@
         procuramos sistematicamente por outro espaço vago dentro da mesma tabela. Esse processo de busca por um novo
         local é chamado de sondagem (probing). Para este trabalho, utilizamos a sondagem linear, que consiste em
         verificar a próxima posição sequencial (<code class="refs">índice + 1, índice + 2, ...</code>) até que um espaço
-        livre seja
-        encontrado.
+        livre seja encontrado. A escolha da sondagem linear como método de resolução de colisões foi feita de forma
+        intencional,
+        com o objetivo de isolar e analisar com mais clareza o desempenho do elemento central do nosso estudo: a função
+        de hash. Métodos mais sofisticados, como a sondagem quadrática ou o hashing duplo, têm como propósito reduzir os
+        efeitos de uma má distribuição de chaves, o que poderia acabar mascarando falhas de uma função de hash
+        ineficiente. Já a sondagem linear, por sua natureza e pela conhecida tendência ao problema de <strong>clustering
+          primário</strong> (agrupamento de elementos), não oferece esse tipo de “compensação”. Assim, quando uma função
+        distribui
+        mal as chaves, os impactos aparecem de imediato nos resultados, geralmente em forma de um aumento expressivo no
+        número de colisões. Por isso, ao adotar a estratégia mais simples de resolução, garantimos que as métricas
+        coletadas reflitam de maneira mais direta e fiel a qualidade da função de hash em si, que é justamente o foco
+        principal desta análise.
       </p>
       <h4 class="border-bottom pb-2 mb-4">2.2. A Operação de Inserção (put) e o Impacto das Colisões</h4>
       <p>O foco do nosso estudo está na operação de inserção (put), pois é nela que o custo das colisões se manifesta de
@@ -130,7 +140,8 @@
       </ol>
       É fácil ver que cada colisão adiciona passos extras à inserção. Muitas colisões em sequência criam clusters
       (agrupamentos), tornando a busca por um local vago cada vez mais demorada e prejudicando o desempenho geral.
-      Veja o exemplo a seguir:
+      Veja o exemplo a seguir, a função de hash utilizada é o <strong>Método da Divisão</strong>, onde o índice é o
+      resto da divisão da chave por 10:
       </p>
       <img src="assets/img_1.png" class="d-block mx-auto" alt="Descrição" style="max-width: 80%; height: 50%;">
 
@@ -144,7 +155,7 @@
         <strong>Método da Multiplicação:</strong> Um método mais robusto. A chave é multiplicada por uma constante
         (geralmente uma fração
         entre 0 e 1), a parte fracionária do resultado é extraída e, então, multiplicada pelo tamanho da tabela para
-        obter o índice final. É menos dependente da qualidade do tamanho da tabela.
+        obter o índice final. É menos dependente do tamanho da tabela.
         <br>
         <strong>Método de Dobra (Folding):</strong> Esta técnica quebra a chave em vários pedaços, que são
         então combinados
@@ -165,7 +176,7 @@
       </p>
     </section>
     <section id="metodologia">
-      <h2 class="border-bottom pb-2 mb-4">Metodologia Geral</h2>
+      <h2 class="border-bottom pb-2 mb-4">3. Metodologia Geral</h2>
       <p>Para garantir que a nossa análise fosse justa, sistemática e reproduzível, adotamos uma metodologia
         automatizada que abrange desde a criação dos dados de teste até a visualização dos resultados. Todo o processo
         foi orquestrado para ser executado com um único comando, assegurando a consistência entre diferentes execuções.
@@ -240,9 +251,12 @@
           <h6>Por que chaves de números primos?</h6>
           <ul>
             <li><strong>Objetivo: </strong>Testar a robustez contra padrões matemáticos não-triviais.</li>
-            <li><strong>Explicação: </strong>Números primos não são sequenciais nem verdadeiramente aleatórios; eles
-              seguem padrões matemáticos complexos e, crucialmente, carecem de pequenos divisores. Esta carga é um teste
-              de estresse mais sutil. Para o método da <strong>Divisão</strong>, que depende de um tamanho de tabela
+            <li><strong>Explicação: </strong>Números primos são números naturais positivos maiores que 1, que possuem
+              exatamente dois divisores: o 1 e eles mesmos. Embora não sejam sequenciais nem verdadeiramente aleatórios,
+              seguem padrões matemáticos complexos, mas não existe até hoje uma fórmula de recorrência simples que gere
+              todos os primos. Esta carga é um teste de estresse mais sutil. Para o método da <strong>Divisão</strong>,
+              que
+              depende de um tamanho de tabela
               primo para se
               proteger contra chaves com fatores comuns (ex: muitas chaves pares), testá-lo com chaves que <i>já são
                 primas</i>
@@ -285,14 +299,28 @@
       <h4 class="border-bottom pb-2 mb-4">3.4. Métricas de Desempenho Analisadas</h4>
       <p>Para avaliar a eficácia de cada função de hash, focamos em duas métricas cruciais:</p>
       <ul>
-        <li>Número de Colisões: Contamos quantas vezes a função de hash gerou um índice que já estava ocupado por outra
+        <li><strong>Número de Colisões:</strong> Contamos quantas vezes a função de hash gerou um índice que já estava
+          ocupado por outra
           chave.</li>
-        <li>Variância: mede a uniformidade da distribuição das chaves. Uma baixa variância indica um bom espalhamento,
-          enquanto uma alta variância aponta a formação de clusters.</li>
+        <li><strong>Variância:</strong> Esta métrica avalia a uniformidade da distribuição medindo a variância
+          estatística da frequência
+          de chaves por posição na tabela. Para um conjunto de <code class="refs">N</code> chaves e uma tabela de <code
+            class="refs">M</code> posições, a frequência média
+          ideal por posição é <code class="refs">μ = N/M</code>. Uma função de hash perfeita distribuiria as chaves de
+          forma que a frequência de
+          cada posição ficasse muito próxima de <code class="refs">μ</code>, resultando em uma <strong>baixa
+            variância</strong>. Por
+          outro lado, a formação de
+          <i>clusters</i> significa que algumas poucas posições terão uma frequência muito acima da média <code
+            class="refs"></code>μ, enquanto muitas
+          outras terão frequência zero. Por definição estatística, um conjunto de dados com valores tão dispersos
+          (alguns muito altos, muitos em zero) terá uma alta variância. Portanto, neste contexto, uma alta variância não
+          é apenas um indicador, mas a própria consequência matemática da formação de clusters
+        </li>
       </ul>
     </section>
     <section id="implementacao">
-      <h2 class="border-bottom pb-2 mb-4">Implementação</h2>
+      <h2 class="border-bottom pb-2 mb-4">4. Implementação</h2>
       <p>A seguir, vamos apresentar o código por trás do nosso estudo. A implementação foi dividida em duas partes
         principais: a estrutura da <code class="refs">HashTable</code>, que serviu como base para todos os testes, e as
         cinco funções de hash,
@@ -314,7 +342,7 @@
       <p>O método <code class="refs">put</code> é o componente central da classe, responsável pela inserção de novos
         pares de chave-valor e pelo
         tratamento de colisões. Sua lógica segue os seguintes passos:</p>
-      <ol start="6">
+      <ol>
         <li>Cálculo do Hash Inicial: A função de hash fornecida é utilizada para calcular o índice inicial da chave.
         </li>
         <li>Sondagem Linear: Um laço é iniciado para procurar uma posição disponível na tabela, avançando
@@ -437,7 +465,7 @@
         notavelmente superior para
         as chaves sequenciais em
         comparação com as outras.</p>
-      <h4>5.2. Análise da Variância</h4>
+      <h4 class="border-bottom pb-2 mb-4">5.2. Análise da Variância</h4>
       <img src="assets/hist_variancia_30.png" class="d-block mx-auto" alt="Descrição"
         style="max-width: 80%; height: 50%;">
       <h6>Fator de Carga: 30% (3.000 chaves)</h6>
@@ -467,10 +495,10 @@
       <h2 class="border-bottom pb-2 mb-4">6. Análise Comparativa das Funções Hash</h2>
       <p>A análise dos novos resultados permite traçar um perfil definitivo sobre a eficácia, robustez e as fraquezas de
         cada uma das cinco funções de hash estudadas.</p>
-      <h4 class="border-bottom pb-2 mb-4"><code class="refs">DIVISION, MULTIPLICATION, TCR e SHIFT_XOR:</code></h4>
+      <h4 class="border-bottom pb-2 mb-4"><code>DIVISION, MULTIPLICATION, TCR e SHIFT_XOR:</code></h4>
       <p>Essas quatro funções formaram um grupo de desempenho consistentemente alto e muito similar. Elas se mostraram
         robustas para todos os tipos de chaves e fatores de carga, provando serem escolhas seguras e confiáveis.</p>
-      <h4 class="border-bottom pb-2 mb-4"><code class="refs">FOLDING:</code></h4>
+      <h4 class="border-bottom pb-2 mb-4"><code>FOLDING:</code></h4>
       <p>Os resultados confirmam que esta implementação é fundamentalmente inadequada para o universo de chaves inteiras
         testado. Tanto o número de colisões quanto a variância foram ordens de magnitude piores que as outras funções em
         todos os cenários.</p>
@@ -566,7 +594,7 @@
       </p>
     </section>
     <section id="conclusao">
-      <h2 class="border-bottom pb-2 mb-4">Conclusão</h2>
+      <h2 class="border-bottom pb-2 mb-4">8. Conclusão</h2>
       <p>Este trabalho se propôs a realizar uma análise comparativa e quantitativa do desempenho de cinco funções de
         hash distintas no contexto de uma tabela hash com endereçamento aberto e sondagem linear. Utilizando o número de
         colisões e a variância da distribuição como métricas, submetemos as funções a diferentes tipos e volumes de
@@ -585,7 +613,7 @@
       </p>
     </section>
     <section id="creditos">
-      <h2 class="border-bottom pb-2 mb-4">Autores e Referências</h2>
+      <h2 class="border-bottom pb-2 mb-4">9. Autores e Referências</h2>
       <h4 class="border-bottom pb-2 mb-4">9.1. Autores</h4>
       <ul>
         <li>Bruno Rafael Medeiros Silvestre</li>
