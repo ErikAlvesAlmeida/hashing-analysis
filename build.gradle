@@ -5,7 +5,7 @@ plugins {
 group = 'com.hashing.analysis'
 version = '1.0'
 
-java { 
+java {
     sourceCompatibility = '17'
 }
 
@@ -13,56 +13,75 @@ repositories {
     mavenCentral()
 }
 
+def os = System.getProperty("os.name").toLowerCase()
+def isWindows = os.contains("windows")
+
+def venvDir = file(".venv")
+def pythonExecutable = isWindows ? "${venvDir}/Scripts/python.exe" : "${venvDir}/bin/python"
+def pipExecutable = isWindows ? "${venvDir}/Scripts/pip.exe" : "${venvDir}/bin/pip"
+
+task createVenv(type: Exec) {
+    description 'Cria o ambiente virtual Python (.venv).'
+    onlyIf { !venvDir.exists() }
+    commandLine isWindows ? ['python', '-m', 'venv', '.venv'] : ['python3', '-m', 'venv', '.venv']
+}
+
+task installPipDeps(type: Exec, dependsOn: createVenv) {
+    description 'Instala as dependências Python do requirements.txt.'
+    def requirementsFile = file('requirements.txt')
+    
+    inputs.file(requirementsFile).optional()
+    
+    onlyIf { requirementsFile.exists() }
+
+    commandLine pipExecutable, 'install', '-r', requirementsFile.name
+}
+
 task createDirs {
-    def keysDir = file('data/keys')
-    def outputDir = file('data/output')
-    def resultsDir = file('results')
+    description 'Cria as pastas de dados e resultados.'
+    def dataKeysDir = layout.projectDirectory.dir("data/keys")
+    def dataOutputDir = layout.projectDirectory.dir("data/output")
+    def resultsCollisionDir = layout.projectDirectory.dir("results/collision")
+    def resultsVarianceDir = layout.projectDirectory.dir("results/variance")
+
+    outputs.dir(dataKeysDir)
+    outputs.dir(dataOutputDir)
+    outputs.dir(resultsCollisionDir)
+    outputs.dir(resultsVarianceDir)
 
     doLast {
-        if (!keysDir.exists()) {
-            keysDir.mkdirs()
-        }
-        if (!outputDir.exists()) {
-            outputDir.mkdirs()
-        }
-        if (!resultsDir.exists()) {
-            resultsDir.mkdirs()
-        }
+        dataKeysDir.asFile.mkdirs()
+        dataOutputDir.asFile.mkdirs()
+        resultsCollisionDir.asFile.mkdirs()
+        resultsVarianceDir.asFile.mkdirs()
     }
 }
 
-task generateData(type: Exec) {
+task generateData(type: Exec, dependsOn: installPipDeps) {
     description 'Gera os dados de entrada usando o script Python.'
-    workingDir project.rootDir  
-    commandLine 'python', 'src/python/scripts_data.py'
+    commandLine pythonExecutable, 'src/python/scripts_data.py'
 }
 
-task runAnalysis(type: JavaExec) {
+task runAnalysis(type: JavaExec, dependsOn: generateData) {
     description 'Roda a análise de colisão com o programa Java.'
     dependsOn tasks.compileJava
-    def outputFile = file('data/output/output.txt')
-    println "Analise concluida. Saida salva em: ${outputFile.absolutePath}"
-    workingDir project.rootDir
-    classpath sourceSets.main.runtimeClasspath
+    classpath = sourceSets.main.runtimeClasspath
     mainClass = 'benchmark.CollisionCounter'
 }
 
-task generateGraphs(type: Exec) {
+task generateGraphs(type: Exec, dependsOn: runAnalysis) {
     description 'Gera os gráficos com base nos resultados da análise.'
-    dependsOn runAnalysis
-    workingDir project.rootDir
-    commandLine 'python', 'src/python/graphs_data.py'
+    commandLine pythonExecutable, 'src/python/graphs_data.py'
 }
 
-task automateAll {
-    dependsOn createDirs, generateData, runAnalysis, generateGraphs
-    description 'Executa a pipeline completa: gera dados, roda a análise e cria os gráficos.'
+task automateAll(dependsOn: [createDirs, generateGraphs]) {
+    description 'Executa a pipeline completa: cria venv, instala dependências, gera dados, roda a análise e cria os gráficos.'
+    doLast {
+        println ">>> Processo completo executado com sucesso! Resultados em /results <<<"
+    }
 }
 
 task cleanResults(type: Delete) {
     description 'Limpa os arquivos de resultados e gráficos gerados.'
-    delete 'results', 'graphs'
+    delete 'results', 'data', '.venv'
 }
-
-runAnalysis.mustRunAfter generateData
-generateGraphs.mustRunAfter runAnalysis

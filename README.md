@@ -13,9 +13,9 @@ Antes de começar, garanta que você tenha as seguintes ferramentas instaladas e
 
 - *Java Development Kit (JDK)*: Versão 17 ou superior.
 
-- *Gradle*: Para automação da compilação e execução dos testes.
+- *Gradle*: Para automação da compilação e execução dos testes. Versão 8 ou superior.
 
-- *Python*: Versão 3.6 ou superior.
+- *Python*: Versão 3.11 ou superior.
 
 Você pode verificar as instalações com os seguintes comandos no seu terminal:
 
@@ -29,7 +29,7 @@ python3 --version
 ## Instalação e Configuração
 Siga os passos abaixo para configurar o ambiente e instalar as dependências.
 
-### 1. Clone o Repositório
+### Clone o Repositório
 Use o comando abaixo para criar uma cópia local do projeto:
 
 ```bash
@@ -37,20 +37,7 @@ git clone https://github.com/ErikAlvesAlmeida/hashing-analysis.git
 cd hashing-analysis
 ```
 
-### 2. Instale as Dependências Python
-Este projeto utiliza pandas e matplotlib para gerar as cargas de teste e os gráficos de resultado. Instale-as facilmente usando o arquivo requirements.txt:
-
-```bash
-pip install -r requirements.txt
-```
-
-````
-(Nota: pode ser necessário usar pip3 dependendo da sua configuração de sistema).
-````
-
 ## Executando os Testes
-Com todo o ambiente configurado, utilize um único comando Gradle para executar todo o fluxo do projeto: gerar os arquivos de carga (chaves), rodar os benchmarks em Java e, por fim, gerar os gráficos de análise com os resultados.
-
 Na pasta raiz do projeto, execute:
 
 ```bash

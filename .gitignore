@@ -11,8 +11,9 @@ build/
 out/
 bin/
 
-# Classes compiladas
+# Classes compiladas e interpretadas
 *.class
+.venv/
 
 # Dados gerados de execução
 data/keys
